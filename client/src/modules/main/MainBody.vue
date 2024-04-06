@@ -1,0 +1,63 @@
+<template>
+    <section class="schedule">
+        <div class="schedule__controls">
+            <Calendar />
+            <CAForm />
+        </div>
+        <div class="schedule__list">
+            <AppointmentList />
+        </div>
+    </section>
+</template>
+
+<script setup lang="ts">
+import AppointmentList from '@/components/AppointmentList.vue';
+import CAForm from '@/components/CAForm.vue';
+import Calendar from '@/components/Calendar.vue';
+import { onMounted } from 'vue';
+import { useSheduleService } from '@/modules/main/service/main.service';
+
+const { getSheduleListAppointments } = useSheduleService();
+
+onMounted(async () => {
+    await getSheduleListAppointments();
+});
+</script>
+
+<style scoped lang="scss">
+@import '@/style/variables.scss';
+
+.schedule {
+    display: grid;
+    grid-template-columns: 280px 500px;
+    column-gap: 120px;
+    padding-top: 50px;
+    &__controls {
+        display: grid;
+        grid-template-rows: 272px 370px;
+        row-gap: 50px;
+    }
+    &__list {
+        display: grid;
+        grid-auto-rows: 140px;
+        row-gap: 25px;
+    }
+    &__reload {
+        padding: 10px 20px;
+        width: 150px;
+        height: 40px;
+        margin: 30px auto 0 auto;
+        background: $inputs;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        border-radius: 24px;
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 20px;
+        color: #000000;
+        cursor: pointer;
+        &:disabled {
+            background: $disabled;
+        }
+    }
+}
+</style>
