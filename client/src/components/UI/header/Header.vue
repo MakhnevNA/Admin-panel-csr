@@ -7,15 +7,17 @@
         </RouterLink>
         <nav>
             <ul class="header__list">
-                <RouterLink
-                    :to="ROUTER_LINK.MAIN_PAGE"
-                    class="header__link header__link--active"
-                >
-                    <a href="/">Schedule</a>
-                </RouterLink>
-                <RouterLink :to="ROUTER_LINK.HISTORY_PAGE" class="header__link">
-                    <a href="/">History</a>
-                </RouterLink>
+                <li class="header__link" v-for="link in headerNavigation">
+                    <RouterLink
+                        :to="link.url"
+                        class="header__link"
+                        :class="{
+                            'header__link--active': activeTabUrl === link.url,
+                        }"
+                    >
+                        {{ link.title }}
+                    </RouterLink>
+                </li>
             </ul>
         </nav>
     </header>
@@ -23,6 +25,10 @@
 
 <script setup lang="ts">
 import { ROUTER_LINK } from '@/shared/types';
+import { headerNavigation } from './constants';
+import { ref } from 'vue';
+
+const activeTabUrl = ref(window.location.pathname);
 </script>
 
 <style scoped lang="scss">

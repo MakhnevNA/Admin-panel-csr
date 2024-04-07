@@ -1,13 +1,13 @@
 import { useHttp } from '@/hooks/http.hook';
-import { ISheduleListAppointments } from '../types';
+import { ISheduleListActiveAppointments } from '../types';
 
 const { request } = useHttp();
 
-export const getAllAppoinments = async (): Promise<
-    ISheduleListAppointments[]
+export const getActiveAppoinments = async (): Promise<
+    ISheduleListActiveAppointments[]
 > => {
     try {
-        return request<ISheduleListAppointments[]>({
+        return request<ISheduleListActiveAppointments[]>({
             url: 'api/',
         });
     } catch (error) {

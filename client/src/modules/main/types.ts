@@ -1,8 +1,7 @@
-export interface ISheduleListAppointments {
+export interface ISheduleListActiveAppointments {
     _id: string;
     date: string;
     name: string;
     service: string;
     phone: string;
-    canceled: boolean;
 }

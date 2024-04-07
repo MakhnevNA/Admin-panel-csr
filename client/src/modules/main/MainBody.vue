@@ -14,14 +14,6 @@
 import AppointmentList from '@/components/AppointmentList.vue';
 import CAForm from '@/components/CAForm.vue';
 import Calendar from '@/components/Calendar.vue';
-import { onMounted } from 'vue';
-import { useSheduleService } from '@/modules/main/service/main.service';
-
-const { getSheduleListAppointments } = useSheduleService();
-
-onMounted(async () => {
-    await getSheduleListAppointments();
-});
 </script>
 
 <style scoped lang="scss">

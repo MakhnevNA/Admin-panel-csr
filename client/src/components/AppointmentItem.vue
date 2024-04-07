@@ -14,21 +14,43 @@
                 >Phone: {{ props.appointment.phone }}</span
             >
         </div>
-        <div class="appointment__time">
+        <div
+            class="appointment__time"
+            v-if="activeTabUrl === ROUTER_LINK.MAIN_PAGE"
+        >
             <span>Time left:</span>
-            <span class="appointment__timer">HH:mm</span>
+            <span class="appointment__timer">DD:HH:mm</span>
         </div>
-        <button class="appointment__cancel">Cancel</button>
+        <button
+            v-if="activeTabUrl === ROUTER_LINK.MAIN_PAGE"
+            class="appointment__cancel"
+        >
+            Cancel
+        </button>
 
-        <!-- <div class="appointment__canceled">Canceled</div> -->
+        <div
+            v-else-if="
+                activeTabUrl === ROUTER_LINK.HISTORY_PAGE &&
+                'canceled' in appointment &&
+                appointment.canceled
+            "
+            class="appointment__canceled"
+        >
+            Canceled
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ISheduleListAppointments } from '@/modules/main/types';
+import { IHistoryListAllAppointments } from '@/modules/history/types';
+import { ISheduleListActiveAppointments } from '@/modules/main/types';
+import { ROUTER_LINK } from '@/shared/types';
+import { ref } from 'vue';
+
+const activeTabUrl = ref(window.location.pathname);
 
 interface IAppointmentItem {
-    appointment: ISheduleListAppointments;
+    appointment: ISheduleListActiveAppointments | IHistoryListAllAppointments;
 }
 
 const props = defineProps<IAppointmentItem>();
@@ -104,3 +126,4 @@ const props = defineProps<IAppointmentItem>();
     }
 }
 </style>
+@/modules/history/types

@@ -1,22 +1,25 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { ISheduleListAppointments } from '../types';
-import { getAllAppoinments } from './main.transport';
+import { ISheduleListActiveAppointments } from '../types';
+import { getActiveAppoinments } from './main.transport';
 
-export const useSheduleService = defineStore('sheduleService', () => {
-    const sheduleListAppointments = ref<ISheduleListAppointments[]>();
+export const useSheduleService = defineStore('useSheduleService', () => {
+    const sheduleListActiveAppointments =
+        ref<ISheduleListActiveAppointments[]>();
 
-    const setSheduleListAppointments = (data: ISheduleListAppointments[]) => {
-        sheduleListAppointments.value = data;
+    const setSheduleListActiveAppointments = (
+        data: ISheduleListActiveAppointments[],
+    ) => {
+        sheduleListActiveAppointments.value = data;
     };
 
-    const getSheduleListAppointments = async () => {
-        const appointments = await getAllAppoinments();
-        setSheduleListAppointments(appointments);
+    const getSheduleListActiveAppointments = async () => {
+        const appointments = await getActiveAppoinments();
+        setSheduleListActiveAppointments(appointments);
     };
 
     return {
-        getSheduleListAppointments,
-        sheduleListAppointments,
+        sheduleListActiveAppointments,
+        getSheduleListActiveAppointments,
     };
 });

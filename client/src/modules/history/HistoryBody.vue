@@ -36,3 +36,4 @@ import HistoryList from '@/components/HistoryList.vue';
     }
 }
 </style>
+@/modules/history/service/main.service

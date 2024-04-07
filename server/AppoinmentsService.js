@@ -6,6 +6,16 @@ class AppoinmentsService {
         return createdAppointment;
     }
 
+    async getActiveAppointments() {
+        const activeAppointments = await Appointments.find();
+
+        const filteredData = activeAppointments.map((item) => {
+            const { canceled, ...rest } = item.toObject();
+            return rest;
+        });
+        return filteredData;
+    }
+
     async getAllAppointments() {
         const allAppointments = await Appointments.find();
         return allAppointments;
@@ -20,7 +30,7 @@ class AppoinmentsService {
         if (!appointment._id) {
             throw new Error('не указан id');
         }
-        // с этим разобраться надо
+        // TODO: с этим разобраться надо
         const updatedAppointment = await Appointments.findByIdAndUpdate(
             appointment._id,
         );

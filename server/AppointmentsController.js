@@ -13,6 +13,16 @@ class AppointmentsController {
         }
     }
 
+    async getActiveAppointments(req, res) {
+        try {
+            const activeAppointments =
+                await AppoinmentsService.getActiveAppointments();
+            return res.json(activeAppointments);
+        } catch (e) {
+            res.status(500).json(e);
+        }
+    }
+
     async getAllAppointments(req, res) {
         try {
             const allAppointments =
