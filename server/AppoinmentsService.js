@@ -9,10 +9,13 @@ class AppoinmentsService {
     async getActiveAppointments() {
         const activeAppointments = await Appointments.find();
 
-        const filteredData = activeAppointments.map((item) => {
-            const { canceled, ...rest } = item.toObject();
-            return rest;
-        });
+        const filteredData = activeAppointments
+            .filter((active) => !active.canceled)
+            .map((item) => {
+                const { canceled, ...rest } = item.toObject();
+                return rest;
+            });
+
         return filteredData;
     }
 
