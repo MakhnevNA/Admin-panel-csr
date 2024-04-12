@@ -2,7 +2,7 @@
     <div class="appointment">
         <div class="appointment__info">
             <span class="appointment__date"
-                >Date: {{ props.appointment.date }}</span
+                >Date: {{ formattedDate(props.appointment.date) }}</span
             >
             <span class="appointment__name"
                 >Name: {{ props.appointment.name }}</span
@@ -14,23 +14,16 @@
                 >Phone: {{ props.appointment.phone }}</span
             >
         </div>
-        <div
-            class="appointment__time"
-            v-if="activeTabUrl === ROUTER_LINK.MAIN_PAGE"
-        >
-            <span>Time left:</span>
-            <span class="appointment__timer">DD:HH:mm</span>
-        </div>
-        <button
-            v-if="activeTabUrl === ROUTER_LINK.MAIN_PAGE"
-            class="appointment__cancel"
-        >
-            Cancel
-        </button>
-
+        <template v-if="location === ROUTER_LINK.MAIN_PAGE">
+            <div class="appointment__time">
+                <span>Time left:</span>
+                <span class="appointment__timer">{{ timeLeft }}</span>
+            </div>
+            <button class="appointment__cancel">Cancel</button>
+        </template>
         <div
             v-else-if="
-                activeTabUrl === ROUTER_LINK.HISTORY_PAGE &&
+                location === ROUTER_LINK.HISTORY_PAGE &&
                 'canceled' in appointment &&
                 appointment.canceled
             "
@@ -45,15 +38,46 @@
 import { IHistoryListAllAppointments } from '@/modules/history/types';
 import { ISheduleListActiveAppointments } from '@/modules/main/types';
 import { ROUTER_LINK } from '@/shared/types';
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
+import { formattedDate } from '@/shared/utils/formattedDate.ts';
+import dayjs from 'dayjs';
 
-const activeTabUrl = ref(window.location.pathname);
+const location = window.location.pathname;
+const timeLeft = ref<string | null>(null);
 
-interface IAppointmentItem {
+interface IAppointmentItemProps {
     appointment: ISheduleListActiveAppointments | IHistoryListAllAppointments;
 }
 
-const props = defineProps<IAppointmentItem>();
+const props = defineProps<IAppointmentItemProps>();
+
+let timerId: NodeJS.Timeout;
+
+onMounted(() => {
+    let days;
+    let hours;
+    let minutes;
+
+    const updateValues = () => {
+        days = dayjs(props.appointment.date).diff(undefined, 'd');
+        hours = dayjs(props.appointment.date).diff(undefined, 'h') % 60;
+        minutes = dayjs(props.appointment.date).diff(undefined, 'm') % 60;
+
+        hours = String(hours).padStart(2, '0');
+        minutes = String(minutes).padStart(2, '0');
+
+        timeLeft.value = `${days}:${hours}:${minutes}`;
+    };
+
+    if (location === ROUTER_LINK.MAIN_PAGE) {
+        updateValues();
+        timerId = setInterval(updateValues, 60000);
+    }
+});
+
+onUnmounted(() => {
+    clearInterval(timerId);
+});
 </script>
 
 <style scoped lang="scss">
@@ -66,7 +90,7 @@ const props = defineProps<IAppointmentItem>();
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
     display: grid;
     grid-template-columns: 240px auto;
-    column-gap: 110px;
+    column-gap: 100px;
     &__timer {
         display: block;
         font-size: 24px;
@@ -126,4 +150,3 @@ const props = defineProps<IAppointmentItem>();
     }
 }
 </style>
-@/modules/history/types

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { ISheduleListActiveAppointments } from '../types';
 import { getActiveAppoinments } from './main.transport';
+import dayjs from 'dayjs';
 
 export const useSheduleService = defineStore('useSheduleService', () => {
     const sheduleListActiveAppointments =
@@ -15,7 +16,11 @@ export const useSheduleService = defineStore('useSheduleService', () => {
 
     const getSheduleListActiveAppointments = async () => {
         const appointments = await getActiveAppoinments();
-        setSheduleListActiveAppointments(appointments);
+
+        const filteredAppointments = appointments.filter((item) => {
+            return dayjs(item.date).diff(undefined, 'minute') > 0;
+        });
+        setSheduleListActiveAppointments(filteredAppointments);
     };
 
     return {
