@@ -7,7 +7,7 @@
         </RouterLink>
         <nav>
             <ul class="header__list">
-                <li class="header__link" v-for="link in headerNavigation">
+                <li class="header__item" v-for="link in headerNavigation">
                     <RouterLink
                         :to="link.url"
                         class="header__link"
@@ -55,21 +55,23 @@ const activeTabUrl = ref(window.location.pathname);
         height: 60px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.4);
     }
-    &__link {
+    &__item {
         font-weight: 700;
         font-size: 20px;
         line-height: 27px;
         color: rgba(0, 0, 0, 0.5);
-        &--active {
+    }
+
+    &__link {
+        display: block;
+        width: 100%;
+        padding: 0 20px;
+        &:hover {
             color: $main-color;
         }
-        a {
-            display: block;
-            width: 100%;
-            padding: 0 20px;
-            &:hover {
-                color: $main-color;
-            }
+
+        &--active {
+            color: $main-color;
         }
     }
 }

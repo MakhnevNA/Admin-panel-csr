@@ -5,7 +5,7 @@
             width: '250px',
             height: '250px',
             objectFit: 'contain',
-            margin: '0 auto',
+            margin: '50px auto 0',
         }"
         :src="errorMessage"
         alt="errorMessage"
