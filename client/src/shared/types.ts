@@ -3,3 +3,5 @@ export enum ROUTER_LINK {
     HISTORY_PAGE = '/history',
     NOT_FOUND_PAGE = '/not-found',
 }
+
+export type TLodaidngStatus = 'idle' | 'loading' | 'error';

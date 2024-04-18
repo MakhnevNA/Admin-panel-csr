@@ -20,9 +20,8 @@ import Calendar from '@/components/Calendar.vue';
 @import '@/style/variables.scss';
 
 .schedule {
-    display: grid;
-    grid-template-columns: 280px 500px;
-    column-gap: 120px;
+    display: flex;
+    justify-content: space-between;
     padding-top: 50px;
     &__controls {
         display: grid;
@@ -30,9 +29,13 @@ import Calendar from '@/components/Calendar.vue';
         row-gap: 50px;
     }
     &__list {
-        display: grid;
-        grid-auto-rows: 140px;
-        row-gap: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        :deep(.appointment) {
+            width: 550px;
+        }
     }
     &__reload {
         padding: 10px 20px;

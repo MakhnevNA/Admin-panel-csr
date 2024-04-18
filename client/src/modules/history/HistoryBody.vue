@@ -16,22 +16,19 @@ import HistoryList from '@/components/HistoryList.vue';
 
 <style scoped lang="scss">
 .history {
-    display: grid;
-    grid-template-columns: 280px 500px;
-    column-gap: 120px;
+    display: flex;
+    justify-content: space-between;
     padding-top: 50px;
-    &__controls {
-        display: grid;
-        grid-template-rows: 272px;
-        row-gap: 50px;
-    }
+
     &__list {
-        display: grid;
-        grid-template-columns: 240px 240px;
-        grid-auto-rows: 170px;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 500px;
         gap: 20px;
-        .appointment {
-            grid-template-columns: auto;
+
+        :deep(.appointment) {
+            height: 180px;
+            width: 240px;
         }
     }
 }

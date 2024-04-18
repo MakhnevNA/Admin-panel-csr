@@ -1,9 +1,11 @@
 <template>
-    <AppointmentItem
-        v-for="appointment in sheduleListActiveAppointments"
-        :key="appointment._id"
-        :appointment="appointment"
-    />
+    <Spinner :loadingStatus="loadingStatus">
+        <AppointmentItem
+            v-for="appointment in sheduleListActiveAppointments"
+            :key="appointment._id"
+            :appointment="appointment"
+        />
+    </Spinner>
 </template>
 
 <script setup lang="ts">
@@ -12,7 +14,10 @@ import { useSheduleService } from '@/modules/main/service/main.service';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 
-const { sheduleListActiveAppointments } = storeToRefs(useSheduleService());
+import Spinner from '@/components/Spinner.vue';
+
+const { sheduleListActiveAppointments, loadingStatus } =
+    storeToRefs(useSheduleService());
 const { getSheduleListActiveAppointments } = useSheduleService();
 
 onMounted(() => {

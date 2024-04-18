@@ -14,13 +14,16 @@
                 >Phone: {{ props.appointment.phone }}</span
             >
         </div>
-        <template v-if="location === ROUTER_LINK.MAIN_PAGE">
+        <div
+            v-if="location === ROUTER_LINK.MAIN_PAGE"
+            class="appointment__widget"
+        >
             <div class="appointment__time">
                 <span>Time left:</span>
                 <span class="appointment__timer">{{ timeLeft }}</span>
             </div>
             <button class="appointment__cancel">Cancel</button>
-        </template>
+        </div>
         <div
             v-else-if="
                 location === ROUTER_LINK.HISTORY_PAGE &&
@@ -108,6 +111,11 @@ onUnmounted(() => {
     span:not(:first-child, .appointment__timer) {
         margin-top: 10px;
     }
+
+    &__widget {
+        justify-self: center;
+    }
+
     &__cancel {
         position: absolute;
         width: 75px;

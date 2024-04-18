@@ -1,5 +1,3 @@
-import { ref } from 'vue';
-
 type HTTPRequestMethods = 'GET' | 'POST' | 'PATCH';
 
 interface HTTPHeaders {
@@ -13,19 +11,13 @@ interface RequestConfig {
     headers?: HTTPHeaders;
 }
 
-type TLodaidngStatus = 'idle' | 'loading';
-
 export const useHttp = () => {
-    const lodaidngStatus = ref<TLodaidngStatus>('idle');
-
     const request = async <ResponseType>({
         url,
         method = 'GET',
         body = null,
         headers = { 'Content-type': 'application/json' },
     }: RequestConfig): Promise<ResponseType> => {
-        lodaidngStatus.value = 'loading';
-
         try {
             const response = await fetch(url, { method, body, headers });
 
@@ -37,13 +29,11 @@ export const useHttp = () => {
 
             const data: ResponseType = await response.json();
 
-            lodaidngStatus.value = 'idle';
-
             return data;
         } catch (e) {
             throw e;
         }
     };
 
-    return { request, lodaidngStatus };
+    return { request };
 };
