@@ -2,49 +2,59 @@
     <form class="caform">
         <div class="caform__title">Create new appointment</div>
         <label htmlFor="name"> Name<span>*</span> </label>
-        <input
-            type="text"
+        <Input
+            v-model:value="name"
             name="name"
+            class="input__name"
             id="name"
             placeholder="User name"
-            required
         />
 
         <label htmlFor="service"> Service<span>*</span> </label>
-        <input
-            type="text"
+        <Input
+            v-model:value="service"
             name="service"
+            class="input__service"
             id="service"
             placeholder="Service name"
-            required
         />
 
         <label htmlFor="phone"> Phone number<span>*</span> </label>
-        <input
+        <Input
+            v-model:value="phone"
             type="tel"
             name="phone"
+            class="input__phone"
             id="phone"
             placeholder="+1 890 335 372"
             pattern="^\++[0-9]{1} [0-9]{3} [0-9]{3} [0-9]{3}"
             title="Format should be +1 804 944 567"
-            required
         />
 
         <label htmlFor="date"> Date<span>*</span> </label>
-        <input
-            type="text"
+        <Input
+            v-model:value="date"
             name="date"
+            class="input__date"
             id="date"
             placeholder="DD/MM/YYYY HH:mm"
             pattern="^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}$"
             title="Format should be DD/MM/YYYY HH:mm"
-            required
         />
+
         <button>Create</button>
     </form>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue';
+import Input from './UI/Input.vue';
+
+const name = ref<string>();
+const service = ref<string>();
+const phone = ref<string>();
+const date = ref<string>();
+</script>
 
 <style scoped lang="scss">
 @import '@/style/variables.scss';
@@ -71,18 +81,6 @@
         span {
             color: $cancel;
         }
-    }
-    input {
-        width: 100%;
-        margin-top: 5px;
-        height: 24px;
-        background: $inputs;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        padding: 10px;
-        font-weight: 600;
-        font-size: 12px;
-        line-height: 16px;
-        color: $black-text-50;
     }
     button {
         width: 150px;
