@@ -8,12 +8,22 @@
             <AppointmentList />
         </div>
     </section>
+    <CancelModal
+        :modal-id="MODAL_ID.CANCEL__MODAL"
+        :closeModal="closeModal"
+        :close-modal-on-escape-key="closeModalOnEscapeKey"
+    />
 </template>
 
 <script setup lang="ts">
 import AppointmentList from '@/components/AppointmentList.vue';
 import CAForm from '@/components/CAForm.vue';
 import Calendar from '@/components/Calendar.vue';
+import CancelModal from '@/components/CancelModal.vue';
+import { useModalService } from '@/components/UI/Modal/modal.service';
+import { MODAL_ID } from '@/shared/modalId';
+
+const { closeModal, closeModalOnEscapeKey } = useModalService();
 </script>
 
 <style scoped lang="scss">
@@ -24,9 +34,9 @@ import Calendar from '@/components/Calendar.vue';
     justify-content: space-between;
     padding-top: 50px;
     &__controls {
-        display: grid;
-        grid-template-rows: 272px 370px;
-        row-gap: 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
     }
     &__list {
         display: flex;
@@ -37,22 +47,22 @@ import Calendar from '@/components/Calendar.vue';
             width: 550px;
         }
     }
-    &__reload {
-        padding: 10px 20px;
-        width: 150px;
-        height: 40px;
-        margin: 30px auto 0 auto;
-        background: $inputs;
-        border: 1px solid rgba(0, 0, 0, 0.4);
-        border-radius: 24px;
-        font-weight: 600;
-        font-size: 15px;
-        line-height: 20px;
-        color: #000000;
-        cursor: pointer;
-        &:disabled {
-            background: $disabled;
-        }
-    }
+    // &__reload {
+    //     padding: 10px 20px;
+    //     width: 150px;
+    //     height: 40px;
+    //     margin: 30px auto 0 auto;
+    //     background: $inputs;
+    //     border: 1px solid rgba(0, 0, 0, 0.4);
+    //     border-radius: 24px;
+    //     font-weight: 600;
+    //     font-size: 15px;
+    //     line-height: 20px;
+    //     color: #000000;
+    //     cursor: pointer;
+    //     &:disabled {
+    //         background: $disabled;
+    //     }
+    // }
 }
 </style>

@@ -59,7 +59,7 @@ const activeTabUrl = ref(window.location.pathname);
         font-weight: 700;
         font-size: 20px;
         line-height: 27px;
-        color: rgba(0, 0, 0, 0.5);
+        color: $black-text-50;
     }
 
     &__link {

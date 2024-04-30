@@ -1,39 +1,48 @@
 <template>
-    <div class="modal">
-        <div class="modal__body">
-            <span class="modal__title">
-                Are you sure you want to delete the appointment?
-            </span>
+    <Modal
+        class-name="cancel__modal"
+        :modal-id="props.modalId"
+        :close-modal="handleClose"
+        :close-modal-on-escape-key="handleCloseOnEscapeKey"
+    >
+        <template #header>
+            Are you sure you want to delete the appointment?
+        </template>
+        <template #body>
             <div class="modal__btns">
-                <button class="modal__ok">Ok</button>
-                <button class="modal__close">Close</button>
+                <button class="modal__ok modal__button">Yes</button>
+                <button class="modal__close modal__button" @click="handleClose">
+                    Close
+                </button>
             </div>
             <div class="modal__status">Success</div>
-        </div>
-    </div>
+        </template>
+    </Modal>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Modal from './UI/Modal/Modal.vue';
+
+type TCancelModalProps = {
+    modalId: string;
+    closeModal: (modalId: string) => void;
+    closeModalOnEscapeKey: (e: KeyboardEvent, modalId: string) => void;
+};
+
+const props = defineProps<TCancelModalProps>();
+
+const handleClose = () => {
+    props.closeModal(props.modalId);
+};
+
+const handleCloseOnEscapeKey = (e: KeyboardEvent) => {
+    props.closeModalOnEscapeKey(e, props.modalId);
+};
+</script>
 
 <style scoped lang="scss">
-@import '../../style/variables.scss';
+@import '@/style/variables.scss';
 .modal {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 243, 223, 0.8);
-    &__body {
-        width: 390px;
-        min-height: 120px;
-        background-color: #fff;
-        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
-        padding: 20px 25px 16px 25px;
-    }
     &__title {
         font-weight: 600;
         font-size: 14px;
@@ -45,17 +54,24 @@
         display: flex;
         justify-content: space-between;
     }
-    &__ok {
+    &__button {
         width: 100px;
         height: 25px;
         padding: 4px 0;
-        background: #ffffff;
-        border: 1px solid $cancel;
         font-weight: 600;
         font-size: 12px;
         line-height: 16px;
-        color: rgba(0, 0, 0, 0.7);
         cursor: pointer;
+    }
+    &__ok {
+        background: #ffffff;
+        border: 1px solid $cancel;
+        color: $black-text-70;
+        transition: background 0.3s;
+
+        &:hover {
+            background: $cancel-80;
+        }
         &:disabled {
             background: $main-color;
             border: 1px solid rgba(243, 171, 155, 0.5);
@@ -63,16 +79,13 @@
         }
     }
     &__close {
-        width: 100px;
-        height: 25px;
-        padding: 4px 0;
-        background: #c1c1c1;
         border: 1px solid $disabled;
-        font-weight: 600;
-        font-size: 12px;
-        line-height: 16px;
-        color: #ffffff;
-        cursor: pointer;
+        color: $black-text-70;
+        transition: background 0.3s;
+
+        &:hover {
+            background: #c1c1c1;
+        }
     }
     &__status {
         margin-top: 15px;

@@ -22,7 +22,12 @@
                 <span>Time left:</span>
                 <span class="appointment__timer">{{ timeLeft }}</span>
             </div>
-            <button class="appointment__cancel">Cancel</button>
+            <button
+                class="appointment__cancel"
+                @click="openModal(MODAL_ID.CANCEL__MODAL)"
+            >
+                Cancel
+            </button>
         </div>
         <div
             v-else-if="
@@ -44,9 +49,13 @@ import { ROUTER_LINK } from '@/shared/types';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { formattedDate } from '@/shared/utils/formattedDate.ts';
 import dayjs from 'dayjs';
+import { useModalService } from './UI/Modal/modal.service';
+import { MODAL_ID } from '@/shared/modalId';
 
 const location = window.location.pathname;
 const timeLeft = ref<string | null>(null);
+
+const { openModal } = useModalService();
 
 interface IAppointmentItemProps {
     appointment: ISheduleListActiveAppointments | IHistoryListAllAppointments;
@@ -91,22 +100,22 @@ onUnmounted(() => {
     padding: 15px;
     background-color: #fff;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
-    display: grid;
-    grid-template-columns: 240px auto;
-    column-gap: 100px;
+    display: flex;
+    justify-content: space-between;
+
     &__timer {
         display: block;
         font-size: 24px;
         line-height: 33px;
-        margin-top: 15px;
-        color: rgba(0, 0, 0, 0.7);
+        margin: 15px 50px 0 0;
+        color: $black-text-70;
     }
     span:not(.appointment__timer) {
         display: block;
         font-weight: 600;
         font-size: 15px;
         line-height: 20px;
-        color: rgba(0, 0, 0, 0.7);
+        color: $black-text-70;
     }
     span:not(:first-child, .appointment__timer) {
         margin-top: 10px;
@@ -129,7 +138,7 @@ onUnmounted(() => {
         font-weight: 600;
         font-size: 12px;
         line-height: 16px;
-        color: rgba(0, 0, 0, 0.7);
+        color: $black-text-70;
         transition: 0.3s all;
         &:hover {
             color: #fff;
@@ -154,7 +163,7 @@ onUnmounted(() => {
         line-height: 16px;
         text-align: center;
         padding: 2px 0;
-        color: rgba(0, 0, 0, 0.7);
+        color: $black-text-70;
     }
 }
 </style>

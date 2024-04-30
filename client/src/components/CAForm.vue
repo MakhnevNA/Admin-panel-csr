@@ -58,7 +58,7 @@
         font-weight: 600;
         font-size: 15px;
         line-height: 20px;
-        color: rgba(0, 0, 0, 0.7);
+        color: $black-text-70;
         text-align: center;
     }
     label {
@@ -67,7 +67,7 @@
         font-weight: 600;
         font-size: 13px;
         line-height: 18px;
-        color: rgba(0, 0, 0, 0.7);
+        color: $black-text-70;
         span {
             color: $cancel;
         }
@@ -82,7 +82,7 @@
         font-weight: 600;
         font-size: 12px;
         line-height: 16px;
-        color: rgba(0, 0, 0, 0.5);
+        color: $black-text-50;
     }
     button {
         width: 150px;
@@ -96,7 +96,7 @@
         font-weight: 600;
         font-size: 15px;
         line-height: 20px;
-        color: rgba(0, 0, 0, 0.7);
+        color: $black-text-70;
         transition: 0.3s all;
         &:hover {
             background-color: $inputs;
