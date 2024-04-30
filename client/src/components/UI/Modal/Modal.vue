@@ -10,7 +10,7 @@
                 <div class="modal__header">
                     <div class="modal__header-title">
                         <slot name="header" />
-                        <button @click.stop="props.closeModal">
+                        <button @click.stop="closeModal">
                             <IconClose width="22" height="22" />
                         </button>
                     </div>
@@ -19,14 +19,14 @@
                     <slot name="body" />
                 </div>
             </div>
-            <div class="modal__overlay" @click.stop="props.closeModal"></div>
+            <div class="modal__overlay" @click.stop="closeModal"></div>
         </div>
     </teleport>
 </template>
 
 <script setup lang="ts">
 import IconClose from '@/assets/svg/IconClose.svg';
-import { ComputedRef, ref } from 'vue';
+import { ref } from 'vue';
 import { onMounted, onUnmounted } from 'vue';
 import { useModalService } from './modal.service';
 import { MODAL_ID } from '@/shared/modalId';
@@ -37,27 +37,29 @@ const isOpen = ref(isModalOpen(MODAL_ID.CANCEL__MODAL));
 
 export type TModalProps = {
     className?: string;
-    closeModal?: VoidFunction;
-    closeModalOnEscapeKey: (e: KeyboardEvent) => void;
     modalId: string;
-    isModalOpen?: ComputedRef<boolean>;
 };
 
 const props = withDefaults(defineProps<TModalProps>(), {
-    closeModal: undefined,
+    className: undefined,
     modalId: undefined,
-    isModalOpen: undefined,
 });
 
+const emit = defineEmits(['closeModalOnEscapeKey', 'closeModal']);
+
+const closeModal = () => {
+    emit('closeModal', props.modalId);
+};
+
+const closeOnEscapeKey = (e: KeyboardEvent) => {
+    emit('closeModalOnEscapeKey', e, props.modalId);
+};
+
 onMounted(() => {
-    document.body.addEventListener('keydown', (e) =>
-        props?.closeModalOnEscapeKey(e),
-    );
+    document.body.addEventListener('keydown', (e) => closeOnEscapeKey(e));
 });
 onUnmounted(() => {
-    document.body.removeEventListener('keydown', (e) =>
-        props.closeModalOnEscapeKey(e),
-    );
+    document.body.removeEventListener('keydown', closeOnEscapeKey);
 });
 </script>
 

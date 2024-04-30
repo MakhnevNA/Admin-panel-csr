@@ -2,8 +2,8 @@
     <Modal
         class-name="cancel__modal"
         :modal-id="props.modalId"
-        :close-modal="handleClose"
-        :close-modal-on-escape-key="handleCloseOnEscapeKey"
+        @closeModal="handleClose"
+        @closeModalOnEscapeKey="handleCloseOnEscapeKey"
     >
         <template #header>
             Are you sure you want to delete the appointment?
@@ -25,18 +25,18 @@ import Modal from './UI/Modal/Modal.vue';
 
 type TCancelModalProps = {
     modalId: string;
-    closeModal: (modalId: string) => void;
-    closeModalOnEscapeKey: (e: KeyboardEvent, modalId: string) => void;
 };
 
 const props = defineProps<TCancelModalProps>();
 
+const emit = defineEmits(['closeModalOnEscapeKey', 'closeModal']);
+
 const handleClose = () => {
-    props.closeModal(props.modalId);
+    emit('closeModal', props.modalId);
 };
 
 const handleCloseOnEscapeKey = (e: KeyboardEvent) => {
-    props.closeModalOnEscapeKey(e, props.modalId);
+    emit('closeModalOnEscapeKey', e, props.modalId);
 };
 </script>
 

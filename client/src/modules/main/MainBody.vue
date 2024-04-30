@@ -10,8 +10,8 @@
     </section>
     <CancelModal
         :modal-id="MODAL_ID.CANCEL__MODAL"
-        :closeModal="closeModal"
-        :close-modal-on-escape-key="closeModalOnEscapeKey"
+        @closeModal="closeModal"
+        @closeModalOnEscapeKey="closeModalOnEscapeKey"
     />
 </template>
 
