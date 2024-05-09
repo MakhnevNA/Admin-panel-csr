@@ -10,10 +10,14 @@
         </template>
         <template #body>
             <div class="modal__btns">
-                <button class="modal__ok modal__button">Yes</button>
-                <button class="modal__close modal__button" @click="handleClose">
+                <Button class="modal__yes modal__button">Yes</Button>
+                <Button
+                    variant="secondary"
+                    class="modal__close modal__button"
+                    @click="handleClose"
+                >
                     Close
-                </button>
+                </Button>
             </div>
             <div class="modal__status">Success</div>
         </template>
@@ -21,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import Button from './UI/Button.vue';
 import Modal from './UI/Modal/Modal.vue';
 
 type TCancelModalProps = {
@@ -58,35 +63,8 @@ const handleCloseOnEscapeKey = (e: KeyboardEvent) => {
         width: 100px;
         height: 25px;
         padding: 4px 0;
-        font-weight: 600;
-        font-size: 12px;
-        line-height: 16px;
-        cursor: pointer;
     }
-    &__ok {
-        background: #ffffff;
-        border: 1px solid $cancel;
-        color: $black-text-70;
-        transition: background 0.3s;
 
-        &:hover {
-            background: $cancel-80;
-        }
-        &:disabled {
-            background: $main-color;
-            border: 1px solid rgba(243, 171, 155, 0.5);
-            color: #fff;
-        }
-    }
-    &__close {
-        border: 1px solid $disabled;
-        color: $black-text-70;
-        transition: background 0.3s;
-
-        &:hover {
-            background: #c1c1c1;
-        }
-    }
     &__status {
         margin-top: 15px;
         font-weight: 600;

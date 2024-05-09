@@ -10,9 +10,9 @@
                 <div class="modal__header">
                     <div class="modal__header-title">
                         <slot name="header" />
-                        <button @click.stop="closeModal">
+                        <Button variant="unstylized" @click="closeModal">
                             <IconClose width="22" height="22" />
-                        </button>
+                        </Button>
                     </div>
                 </div>
                 <div class="modal__body">
@@ -30,6 +30,7 @@ import { ref } from 'vue';
 import { onMounted, onUnmounted } from 'vue';
 import { useModalService } from './modal.service';
 import { MODAL_ID } from '@/shared/modalId';
+import Button from '../Button.vue';
 
 const { isModalOpen } = useModalService();
 

@@ -22,12 +22,13 @@
                 <span>Time left:</span>
                 <span class="appointment__timer">{{ timeLeft }}</span>
             </div>
-            <button
+            <Button
+                variant="secondary"
                 class="appointment__cancel"
                 @click="openModal(MODAL_ID.CANCEL__MODAL)"
             >
                 Cancel
-            </button>
+            </Button>
         </div>
         <div
             v-else-if="
@@ -51,6 +52,7 @@ import { formattedDate } from '@/shared/utils/formattedDate.ts';
 import dayjs from 'dayjs';
 import { useModalService } from './UI/Modal/modal.service';
 import { MODAL_ID } from '@/shared/modalId';
+import Button from './UI/Button.vue';
 
 const location = window.location.pathname;
 const timeLeft = ref<string | null>(null);
@@ -125,31 +127,6 @@ onUnmounted(() => {
         justify-self: center;
     }
 
-    &__cancel {
-        position: absolute;
-        width: 75px;
-        height: 20px;
-        right: 15px;
-        bottom: 15px;
-        padding: 2px 0;
-        background: #ffffff;
-        border: 1px solid $cancel;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 12px;
-        line-height: 16px;
-        color: $black-text-70;
-        transition: 0.3s all;
-        &:hover {
-            color: #fff;
-            background-color: $cancel;
-        }
-        &:disabled {
-            color: #fff;
-            background-color: $inputs;
-            border: none;
-        }
-    }
     &__canceled {
         position: absolute;
         left: 15px;
@@ -164,6 +141,15 @@ onUnmounted(() => {
         text-align: center;
         padding: 2px 0;
         color: $black-text-70;
+    }
+
+    &__cancel {
+        position: absolute;
+        width: 75px;
+        height: 20px;
+        right: 15px;
+        bottom: 15px;
+        padding: 2px 0;
     }
 }
 </style>

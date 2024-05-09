@@ -42,13 +42,14 @@
             title="Format should be DD/MM/YYYY HH:mm"
         />
 
-        <button>Create</button>
+        <Button size="circle" class="caform__btn">Create</Button>
     </form>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import Input from './UI/Input.vue';
+import Button from './UI/Button.vue';
 
 const name = ref<string>();
 const service = ref<string>();
@@ -82,26 +83,11 @@ const date = ref<string>();
             color: $cancel;
         }
     }
-    button {
+
+    .caform__btn {
         width: 150px;
         height: 40px;
-        display: block;
         margin: 20px auto 0 auto;
-        border: 1px solid rgba(0, 0, 0, 0.4);
-        border-radius: 24px;
-        cursor: pointer;
-        background-color: #fff;
-        font-weight: 600;
-        font-size: 15px;
-        line-height: 20px;
-        color: $black-text-70;
-        transition: 0.3s all;
-        &:hover {
-            background-color: $inputs;
-        }
-        &:disabled {
-            background-color: $disabled;
-        }
     }
 }
 </style>
