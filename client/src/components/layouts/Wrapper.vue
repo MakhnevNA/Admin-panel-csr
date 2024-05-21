@@ -14,7 +14,7 @@ import Header from '@/components/header/Header.vue';
 <style scoped lang="scss">
 .wrapper {
     position: relative;
-    width: 1200px;
+    max-width: 1200px;
     margin: 50px auto 50px auto;
     padding: 10px 150px 100px 150px;
     background: linear-gradient(

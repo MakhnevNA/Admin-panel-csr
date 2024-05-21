@@ -1,5 +1,6 @@
 <template>
-    <div class="appointment">
+    <!-- TODO: поменять верстку и стили когда будет готов бэк -->
+    <li class="appointment">
         <div class="appointment__info">
             <span class="appointment__date"
                 >Date: {{ formattedDate(props.appointment.date) }}</span
@@ -40,7 +41,7 @@
         >
             Canceled
         </div>
-    </div>
+    </li>
 </template>
 
 <script setup lang="ts">
@@ -104,6 +105,7 @@ onUnmounted(() => {
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
     display: flex;
     justify-content: space-between;
+    margin: 12px 0;
 
     &__timer {
         display: block;

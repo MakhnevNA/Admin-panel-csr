@@ -1,10 +1,13 @@
 <template>
     <Spinner :loadingStatus="loadingStatus">
-        <AppointmentItem
-            v-for="appointment in historyListAllAppointments"
-            :key="appointment._id"
-            :appointment="appointment"
-        />
+        <ul class="history-list">
+            <AppointmentItem
+                v-for="appointment in historyListAllAppointments"
+                :key="appointment._id"
+                :appointment="appointment"
+                class="history-list__appointment"
+            />
+        </ul>
     </Spinner>
 </template>
 
@@ -24,4 +27,12 @@ onMounted(() => {
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.history-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 250px);
+    justify-content: space-between;
+    width: calc(100% + 24px);
+    gap: 20px;
+}
+</style>

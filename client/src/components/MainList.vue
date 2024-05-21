@@ -1,10 +1,13 @@
 <template>
     <Spinner :loadingStatus="loadingStatus">
-        <AppointmentItem
-            v-for="appointment in sheduleListActiveAppointments"
-            :key="appointment._id"
-            :appointment="appointment"
-        />
+        <ul class="main-list">
+            <AppointmentItem
+                v-for="appointment in sheduleListActiveAppointments"
+                :key="appointment._id"
+                :appointment="appointment"
+                class="main-list__appointment"
+            />
+        </ul>
     </Spinner>
 </template>
 

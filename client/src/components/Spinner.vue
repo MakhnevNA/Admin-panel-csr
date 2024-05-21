@@ -1,6 +1,6 @@
 <template>
     <template v-if="props.loadingStatus === 'loading'">
-        <div style="width: 500px; text-align: center">
+        <div style="width: 500px; text-align: center; margin: 0 auto">
             <IconSpinner width="200" height="200" />
         </div>
     </template>

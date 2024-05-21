@@ -1,36 +1,34 @@
 <template>
-    <section class="history">
-        <div class="history__controls">
+    <div class="history-body">
+        <section class="history-body__filter">
             <Calendar />
-        </div>
-        <div class="history__list">
+        </section>
+        <section class="history-body__content">
             <HistoryList />
-        </div>
-    </section>
+        </section>
+    </div>
 </template>
 
 <script setup lang="ts">
-import Calendar from '@/components/Calendar.vue';
+import Calendar from '@/modules/calendar/Calendar.vue';
 import HistoryList from '@/components/HistoryList.vue';
 </script>
 
 <style scoped lang="scss">
-.history {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 50px;
+.history-body {
+    padding-top: 30px;
 
-    &__list {
+    &__filter {
+        margin-bottom: 40px;
         display: flex;
-        flex-wrap: wrap;
-        max-width: 500px;
-        gap: 20px;
+        gap: 10px;
+    }
 
+    &__content {
         :deep(.appointment) {
             height: 180px;
-            width: 240px;
+            width: 250px;
         }
     }
 }
 </style>
-@/modules/history/service/main.service

@@ -1,13 +1,14 @@
 <template>
-    <section class="schedule">
-        <div class="schedule__controls">
+    <div class="main-body">
+        <section class="main-body__filter">
+            <!-- TODO: связать с v-model; обработчики добавить, чтобы получать массив значений с выбранными датами  -->
             <Calendar />
+        </section>
+        <section class="main-body__content">
             <CAForm />
-        </div>
-        <div class="schedule__list">
-            <AppointmentList />
-        </div>
-    </section>
+            <MainList />
+        </section>
+    </div>
     <CancelModal
         :modal-id="MODAL_ID.CANCEL__MODAL"
         @closeModal="closeModal"
@@ -16,9 +17,9 @@
 </template>
 
 <script setup lang="ts">
-import AppointmentList from '@/components/AppointmentList.vue';
+import MainList from '@/components/MainList.vue';
 import CAForm from '@/components/CAForm.vue';
-import Calendar from '@/components/Calendar.vue';
+import Calendar from '@/modules/calendar/Calendar.vue';
 import CancelModal from '@/components/CancelModal.vue';
 import { useModalService } from '@/components/UI/Modal/modal.service';
 import { MODAL_ID } from '@/shared/modalId';
@@ -29,24 +30,24 @@ const { closeModal, closeModalOnEscapeKey } = useModalService();
 <style scoped lang="scss">
 @import '@/style/variables.scss';
 
-.schedule {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 50px;
-    &__controls {
+.main-body {
+    padding-top: 30px;
+
+    &__filter {
+        margin-bottom: 40px;
         display: flex;
-        flex-direction: column;
-        gap: 50px;
+        gap: 10px;
     }
-    &__list {
+
+    &__content {
         display: flex;
-        flex-direction: column;
-        gap: 20px;
+        justify-content: space-between;
 
         :deep(.appointment) {
             width: 550px;
         }
     }
+
     // &__reload {
     //     padding: 10px 20px;
     //     width: 150px;
