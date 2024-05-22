@@ -1,28 +1,30 @@
 <template>
-    <input
-        :value="props.value"
+    <Input
+        v-model:value="value"
         :type="props.type"
-        class="input"
-        :class-name="props.className"
+        :class="props.className"
         :name="props.name"
         :id="props.id"
         :placeholder="props.placeholder"
-        :required="props.required"
+        class="input"
+        :autocomplete="props.autocomplete"
         @input="updateInput"
     />
 </template>
 
 <script setup lang="ts">
+import { Input } from 'ant-design-vue';
+import { ref } from 'vue';
+
+const value = ref<string | undefined>(undefined);
+
 type TInputProps = {
-    value?: string | number;
     type?: 'text' | 'password' | 'tel';
     className?: string;
     name?: string;
     id?: string;
     placeholder?: string;
-    required?: boolean;
-    title?: string;
-    pattern?: string;
+    autocomplete?: string;
 };
 
 const props = withDefaults(defineProps<TInputProps>(), {
@@ -31,30 +33,30 @@ const props = withDefaults(defineProps<TInputProps>(), {
     name: undefined,
     id: undefined,
     placeholder: undefined,
-    required: true,
-    title: undefined,
-    pattern: undefined,
+    autocomplete: 'off',
 });
 
 const emit = defineEmits(['update:value']);
 
-const updateInput = (e) => {
-    emit('update:value', e.target.value);
+const updateInput = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    emit('update:value', target.value);
 };
 </script>
 
 <style scoped lang="scss">
 @import '@/style/variables.scss';
-input {
+input.ant-input {
     width: 100%;
-    margin-top: 5px;
     height: 24px;
     background: $inputs;
     border: 1px solid rgba(0, 0, 0, 0.15);
-    padding: 10px;
+    padding: 0 11px;
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
     color: $black-text-50;
+    border-radius: unset;
+    box-shadow: unset;
 }
 </style>

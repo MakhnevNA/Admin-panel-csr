@@ -22,6 +22,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ScheduleList: typeof import('./src/components/ScheduleList.vue')['default']
+    Select: typeof import('./src/components/UI/Select.vue')['default']
     Spinner: typeof import('./src/components/Spinner.vue')['default']
     Wrapper: typeof import('./src/components/layouts/Wrapper.vue')['default']
   }
