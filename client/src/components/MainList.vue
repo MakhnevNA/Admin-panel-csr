@@ -23,8 +23,8 @@ const { sheduleListActiveAppointments, loadingStatus } =
     storeToRefs(useSheduleService());
 const { getSheduleListActiveAppointments } = useSheduleService();
 
-onMounted(() => {
-    getSheduleListActiveAppointments();
+onMounted(async () => {
+    await getSheduleListActiveAppointments();
 });
 </script>
 

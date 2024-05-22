@@ -1,19 +1,24 @@
 <template>
     <div class="calendar">
-        <RangePicker :v-model:value="value2" :format="dateFormat" />
+        <RangePicker v-model:value="chosenDate" :format="dateFormat" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { RangePicker } from 'ant-design-vue';
 import { dateFormat } from './constants';
-import dayjs, { Dayjs } from 'dayjs';
+import { useCalendarService } from './service/calendar.service';
+import { TChosenDate } from './types';
 
-const value2 = ref<Dayjs>(dayjs('01/01/2015', dateFormat[0]));
+const chosenDate = ref<TChosenDate>();
+const { setTransformedChosenDate } = useCalendarService();
 
-// TODO: связать с v-model; обработчики добавить, чтобы получать массив значений с выбранными датами
-// TODO: првоерить и почистить стили
+watch(chosenDate, () => {
+    if (chosenDate.value) {
+        setTransformedChosenDate(chosenDate.value);
+    }
+});
 </script>
 
 <style lang="scss">

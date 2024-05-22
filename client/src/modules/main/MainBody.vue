@@ -1,7 +1,6 @@
 <template>
     <div class="main-body">
         <section class="main-body__filter">
-            <!-- TODO: связать с v-model; обработчики добавить, чтобы получать массив значений с выбранными датами  -->
             <Calendar />
         </section>
         <section class="main-body__content">
