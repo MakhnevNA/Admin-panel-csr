@@ -12,6 +12,7 @@
         :modal-id="MODAL_ID.CANCEL__MODAL"
         @closeModal="closeModal"
         @closeModalOnEscapeKey="closeModalOnEscapeKey"
+        :on-click="() => 0"
     />
 </template>
 

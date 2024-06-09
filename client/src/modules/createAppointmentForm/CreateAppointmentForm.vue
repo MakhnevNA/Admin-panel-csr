@@ -97,7 +97,7 @@ import { storeToRefs } from 'pinia';
 import Input from '@/components/UI/Input.vue';
 import Select from '@/components/UI/Select.vue';
 import Button from '@/components/UI/Button.vue';
-import { useGetAvailableSelectData } from '@/core/Select/services/selectService.ts';
+import { useCreateAppointmentFormService } from './service/createAppointmentForm.service';
 const firstName = ref('');
 const secondName = ref('');
 const service = ref<string>();
@@ -106,10 +106,14 @@ const phone = ref('');
 const date = ref('');
 const time = ref('');
 
-const { setAvailableProcedures, setAvailableMasters } =
-    useGetAvailableSelectData();
+const {
+    requestCreateAppointmentFormServiceData,
+    setAvailableProcedures,
+    setAvailableMasters,
+} = useCreateAppointmentFormService();
+
 const { loadingStatus, availableProcedures, availableMasters } = storeToRefs(
-    useGetAvailableSelectData(),
+    useCreateAppointmentFormService(),
 );
 
 const handleGetProcedures = async () => {
@@ -133,9 +137,6 @@ const handleGetMasters = async () => {
     // например, когда это поле выбирается первым и доступные услуги еще неизвестны
     await setAvailableMasters({ procedureId: procedureId });
 };
-
-// const { requestCreateAppointmentFormServiceData } =
-//     useCreateAppointmentFormService();
 
 // с форматом данных для даты решить
 // тогда вроде все хорошо должно работать

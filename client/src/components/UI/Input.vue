@@ -16,7 +16,7 @@
 import { Input } from 'ant-design-vue';
 import { ref } from 'vue';
 
-const value = ref<string | undefined>(undefined);
+const value = ref<string>();
 
 type TInputProps = {
     type?: 'text' | 'password' | 'tel';

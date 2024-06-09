@@ -10,7 +10,9 @@
         </template>
         <template #body>
             <div class="modal__btns">
-                <Button class="modal__yes modal__button">Yes</Button>
+                <Button class="modal__yes modal__button" @click="props.onClick">
+                    Yes
+                </Button>
                 <Button
                     variant="secondary"
                     class="modal__close modal__button"
@@ -30,6 +32,7 @@ import Modal from './UI/Modal/Modal.vue';
 
 type TCancelModalProps = {
     modalId: string;
+    onClick: () => void;
 };
 
 const props = defineProps<TCancelModalProps>();
