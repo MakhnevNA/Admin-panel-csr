@@ -47,10 +47,6 @@ const props = withDefaults(defineProps<ISelectProps>(), {
 const emit = defineEmits(['update:value']);
 
 const handleSelect = (e: RawValueType | LabelInValueType) => {
-    // const selectedIndex = e.target.selectedIndex - 1; // Учитываем placeholder
-    // const selectedEmployee = props.optionValue[selectedIndex];
-    // emit('update:value', selectedEmployee);
-
     emit('update:value', e);
 };
 </script>
