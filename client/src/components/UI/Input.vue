@@ -56,7 +56,7 @@ input.ant-input {
     font-size: 12px;
     line-height: 16px;
     color: $black-text-50;
-    border-radius: unset;
+    border-radius: unset !important;
     box-shadow: unset;
 }
 </style>
