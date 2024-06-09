@@ -4,7 +4,7 @@
             <Calendar />
         </section>
         <section class="main-body__content">
-            <CAForm />
+            <CreateAppointmentForm />
             <MainList />
         </section>
     </div>
@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import MainList from '@/components/MainList.vue';
-import CAForm from '@/components/CAForm.vue';
+import CreateAppointmentForm from '../createAppointmentForm/CreateAppointmentForm.vue';
 import Calendar from '@/modules/calendar/Calendar.vue';
 import CancelModal from '@/components/CancelModal.vue';
 import { useModalService } from '@/components/UI/Modal/modal.service';

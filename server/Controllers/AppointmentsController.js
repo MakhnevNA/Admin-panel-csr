@@ -1,14 +1,12 @@
-import Appointments from './Appointments.js';
-import AppoinmentsService from './AppoinmentsService.js';
+import AppoinmentsService from '../services/AppoinmentsService.js';
 
 class AppointmentsController {
     async createAppoinment(req, res) {
         try {
-            const appointments = await AppoinmentsService.createAppoinment(
-                req.body,
-            );
-            res.json(appointments);
+            await AppoinmentsService.createAppoinment(req.body);
+            res.json({ appointmentAdded: true });
         } catch (e) {
+            res.json({ appointmentAdded: false });
             res.status(500).json(e);
         }
     }

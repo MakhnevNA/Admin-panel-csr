@@ -28,4 +28,10 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.main-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+</style>

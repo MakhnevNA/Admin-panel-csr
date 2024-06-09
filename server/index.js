@@ -5,7 +5,7 @@ import cors from 'cors';
 
 const PORT = 5000;
 const DB_URL =
-    'mongodb+srv://admin:NfJ6dTDdvUjV3Y0G@cluster0.bwvh0aw.mongodb.net/admin-panel?retryWrites=true&w=majority';
+    'mongodb+srv://nikitkamakhnev:X5nzNgoI3YgunJAG@admin-panel.rps0yuh.mongodb.net/admin-panel?retryWrites=true&w=majority';
 
 const app = express();
 

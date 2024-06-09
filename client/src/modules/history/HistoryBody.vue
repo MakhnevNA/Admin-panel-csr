@@ -26,7 +26,7 @@ import HistoryList from '@/components/HistoryList.vue';
 
     &__content {
         :deep(.appointment) {
-            height: 180px;
+            height: 205px;
             width: 250px;
         }
     }
