@@ -1,5 +1,9 @@
 <template>
-    <form class="create-appointment-form" @submit.prevent="handleSubmitForm">
+    <form
+        class="create-appointment-form"
+        :class="{ 'create-appointment-form--dont-valid': !isValidDataForm }"
+        @submit.prevent="handleSubmitForm"
+    >
         <div class="create-appointment-form__title">Create new appointment</div>
         <label htmlFor="service"> First name<span>*</span> </label>
         <Input
@@ -38,6 +42,7 @@
             placeholder="Select a service"
             :option-value="availableProcedures"
             :loading="loadingStatus !== 'idle'"
+            :disabled="!!time"
             @focus="handleGetProcedures"
         />
 
@@ -50,6 +55,7 @@
             placeholder="Master name"
             :option-value="availableMasters"
             :loading="loadingStatus !== 'idle'"
+            :disabled="!!time"
             @focus="handleGetMasters"
         />
 
@@ -60,72 +66,74 @@
             class="input__date"
             id="date"
             placeholder="DD/MM/YYYY"
-            pattern="^\d{2}\/\d{2}\/\d{4}"
-            title="Format should be DD/MM/YYYY"
             :disabled="!masterName"
-        >
-            <option v-for="item in serviceValue" :disabled="!item.available">
-                {{ item.label }}
-            </option>
-        </Select>
-
-        <label htmlFor="date"> Time<span>*</span> </label>
-        <Select
-            v-model:value="time"
-            name="time"
-            class="input__time"
-            id="time"
-            placeholder="HH:mm"
-            pattern="^\d{2}:\d{2}$"
-            title="Format should be HH:mm"
-            :disabled="!date"
         >
             <option v-for="item in serviceValue" :disabled="!item.available">
                 {{ item.label }}
             </option>
         </Select> -->
 
+        <label htmlFor="date"> Time<span>*</span> </label>
+        <Select
+            v-model:value="time"
+            name="time"
+            className="input__time"
+            id="time"
+            placeholder="HH:mm"
+            :option-value="availableTimes[0]?.workingTime"
+            :loading="loadingStatus !== 'idle'"
+            :disabled="!service || !masterName"
+            :on-focus="handleGetTimes"
+        />
+
         <Button type="submit" class="create-appointment-form__btn">
             Create
         </Button>
+        <div
+            v-if="!isValidDataForm"
+            class="create-appointment-form__error-text"
+        >
+            Заполните все поля
+        </div>
     </form>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import Input from '@/components/UI/Input.vue';
 import Select from '@/components/UI/Select.vue';
 import Button from '@/components/UI/Button.vue';
 import { useCreateAppointmentFormService } from './service/createAppointmentForm.service';
-const firstName = ref('');
-const secondName = ref('');
+
+const firstName = ref<string>();
+const secondName = ref<string>();
 const service = ref<string>();
 const masterName = ref<string>();
-const phone = ref('');
-const date = ref('');
-const time = ref('');
+const phone = ref<string>();
+const date = ref<string>('2024-06-16');
+const time = ref<string>();
+
+const isValidDataForm = ref(true);
 
 const {
     requestCreateAppointmentFormServiceData,
     setAvailableProcedures,
     setAvailableMasters,
+    setAvailableTimes,
 } = useCreateAppointmentFormService();
 
-const { loadingStatus, availableProcedures, availableMasters } = storeToRefs(
-    useCreateAppointmentFormService(),
-);
+const { loadingStatus, availableProcedures, availableMasters, availableTimes } =
+    storeToRefs(useCreateAppointmentFormService());
 
 const handleGetProcedures = async () => {
     const mastersProceduresId = availableMasters.value.find(
         (item) => item.value === masterName.value,
     )?.procedures;
 
-    // тут без проверок, потому что если случаи, когда может быть undefined,
+    // тут без проверок, потому что есть случаи, когда может быть undefined,
     // например, когда это поле выбирается первым и доступные мастера еще неизвестны
-    await setAvailableProcedures({
-        mastersProceduresId: mastersProceduresId,
-    });
+    await setAvailableProcedures({ mastersProceduresId });
 };
 
 const handleGetMasters = async () => {
@@ -133,32 +141,46 @@ const handleGetMasters = async () => {
         (item) => item.value === service.value,
     )?.procedureId;
 
-    // тут без проверок, потому что если случаи, когда может быть undefined,
+    // тут без проверок, потому что есть случаи, когда может быть undefined,
     // например, когда это поле выбирается первым и доступные услуги еще неизвестны
-    await setAvailableMasters({ procedureId: procedureId });
+    await setAvailableMasters({ procedureId });
+};
+
+const handleGetTimes = async () => {
+    const procedure = service.value;
+    if (procedure) {
+        await setAvailableTimes({ procedure });
+    }
 };
 
 // с форматом данных для даты решить
-// тогда вроде все хорошо должно работать
 const handleSubmitForm = async () => {
-    console.log({
-        firstName: firstName.value,
-        secondName: secondName.value,
-        service: service.value,
-        masterName: masterName.value,
-        phone: phone.value,
-        // date: date.value,
-        // time: time.value,
-        canceled: false,
-    });
+    const masterId = availableMasters.value.find(
+        (item) => item.name === masterName.value,
+    )?._id;
 
-    // await requestCreateAppointmentFormServiceData({
-    //     name: name.value,
-    //     service: service.value,
-    //     phone: phone.value,
-    //     date: new Date(date.value).toISOString(),
-    //     canceled: false,
-    // });
+    if (
+        !!firstName.value &&
+        !!secondName.value &&
+        !!service.value &&
+        !!masterName.value &&
+        !!phone.value &&
+        !!date.value &&
+        !!time.value &&
+        masterId
+    ) {
+        await requestCreateAppointmentFormServiceData({
+            clientName: `${secondName.value} ${firstName.value}`,
+            service: service.value,
+            masterName: masterName.value,
+            masterId: masterId,
+            phone: phone.value,
+            date: `${date.value}T${time.value.split(' ')[0]}`,
+            canceled: false,
+        });
+    } else {
+        isValidDataForm.value = false;
+    }
 };
 </script>
 
@@ -170,6 +192,17 @@ const handleSubmitForm = async () => {
     padding: 20px;
     background-color: #fff;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
+
+    &--dont-valid {
+        border: 1px solid red;
+    }
+
+    &__error-text {
+        margin-top: 10px;
+        color: red;
+        text-align: center;
+    }
+
     &__title {
         font-weight: 600;
         font-size: 15px;

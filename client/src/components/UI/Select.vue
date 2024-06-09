@@ -11,10 +11,13 @@
         @select="handleSelect"
         @focus="props.onFocus"
     >
+        <SelectOption selected :value="undefined" class="select_without-value">
+            {{ props.placeholder }}
+        </SelectOption>
         <template v-for="option in props.optionValue" :key="option._id">
-            <Select-option :value="option.value">
+            <SelectOption :value="option.value">
                 {{ option.name }}
-            </Select-option>
+            </SelectOption>
         </template>
     </Select>
 </template>
@@ -118,5 +121,9 @@ const handleSelect = (e: RawValueType | LabelInValueType) => {
 
 .ant-select-focused {
     border-color: red !important;
+}
+
+.select_without-value {
+    color: grey !important;
 }
 </style>

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import AppointmentsController from './Controllers/AppointmentsController.js';
 import ProceduresController from './Controllers/ProceduresController.js';
 import MastersController from './Controllers/MastersController.js';
+import TimesController from './Controllers/TimesController.js';
 
 const router = new Router();
 
@@ -9,7 +10,7 @@ router.post('/', AppointmentsController.createAppoinment);
 
 router.post('/procedures', ProceduresController.getAvailableProcedures);
 router.post('/masters', MastersController.getAvailableMasters);
-// router.post('/dates', DatesController.generateDates);
+router.post('/times', TimesController.getAvailableTimes);
 
 router.get('/', AppointmentsController.getActiveAppointments);
 router.get('/history', AppointmentsController.getAllAppointments);

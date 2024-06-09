@@ -5,7 +5,9 @@
                 Date: {{ dateAfterFormatted }}
             </span>
 
-            <span class="appointment__name"> Name: {{ clientName }} </span>
+            <span class="appointment__name">
+                Name: {{ transformedName(props.appointment.clientName) }}
+            </span>
 
             <span class="appointment__service">
                 Service: {{ props.appointment.service }}
@@ -71,8 +73,6 @@ interface IAppointmentItemProps {
 
 const props = defineProps<IAppointmentItemProps>();
 
-// TODO: поменяиь потом способ возращения данных клиента и сделать как у мастера и потом через transformedName отображать
-const clientName = `${props.appointment.secondName} ${props.appointment.firstName[0]}.`;
 const dateAfterFormatted = formattedDate(props.appointment.date);
 
 let timerId: NodeJS.Timeout;
@@ -84,7 +84,7 @@ onMounted(() => {
 
     const updateValues = () => {
         days = dayjs(props.appointment.date).diff(undefined, 'd');
-        hours = dayjs(props.appointment.date).diff(undefined, 'h') % 60;
+        hours = dayjs(props.appointment.date).diff(undefined, 'h') % 24;
         minutes = dayjs(props.appointment.date).diff(undefined, 'm') % 60;
 
         hours = String(hours).padStart(2, '0');

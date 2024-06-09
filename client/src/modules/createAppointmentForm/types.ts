@@ -1,12 +1,10 @@
 export interface ICreateAppointmentForm {
-    firstName: string;
-    secondName: string;
+    clientName: string;
     service: string;
     masterName: string;
     masterId: string;
     phone: string;
     date: string;
-    time: string;
     canceled: boolean;
 }
 
@@ -30,4 +28,19 @@ export interface IMastersResponce {
 
 export interface IMastersRequestBody {
     procedureId?: string;
+}
+
+export interface ITimesRequestBody {
+    procedure: string;
+}
+
+export interface IWorkingTime {
+    _id: string;
+    name: string;
+    value: string;
+}
+export interface ITimesResponce {
+    _id: string;
+    procedure: string;
+    workingTime: IWorkingTime[];
 }

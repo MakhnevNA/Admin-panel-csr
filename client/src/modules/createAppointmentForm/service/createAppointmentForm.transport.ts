@@ -5,6 +5,8 @@ import {
     IMastersResponce,
     IProceduresRequestBody,
     IProceduresResponce,
+    ITimesRequestBody,
+    ITimesResponce,
 } from '../types';
 
 const { request } = useHttp();
@@ -43,6 +45,20 @@ export const getAvailableMasters = (
     try {
         return request({
             url: '/masters',
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getAvailableTimes = (
+    data: ITimesRequestBody,
+): Promise<ITimesResponce[]> => {
+    try {
+        return request({
+            url: '/times',
             method: 'POST',
             body: JSON.stringify(data),
         });

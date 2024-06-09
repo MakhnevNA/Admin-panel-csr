@@ -8,11 +8,14 @@ import {
     IMastersResponce,
     IProceduresRequestBody,
     IProceduresResponce,
+    ITimesRequestBody,
+    ITimesResponce,
 } from '../types';
 import {
     addNewAppointment,
     getAvailableMasters,
     getAvailableProcedures,
+    getAvailableTimes,
 } from './createAppointmentForm.transport';
 import { useSheduleService } from '@/modules/main/service/main.service';
 
@@ -22,6 +25,7 @@ export const useCreateAppointmentFormService = defineStore(
         const loadingStatus = ref<TLodaidngStatus>('idle');
         const availableProcedures = ref<IProceduresResponce[]>([]);
         const availableMasters = ref<IMastersResponce[]>([]);
+        const availableTimes = ref<ITimesResponce[]>([]);
 
         const { getSheduleListActiveAppointments } = useSheduleService();
 
@@ -63,11 +67,24 @@ export const useCreateAppointmentFormService = defineStore(
             }
         };
 
+        const setAvailableTimes = async (data: ITimesRequestBody) => {
+            try {
+                loadingStatus.value = 'loading';
+                availableTimes.value = await getAvailableTimes(data);
+                loadingStatus.value = 'idle';
+            } catch (e) {
+                loadingStatus.value = 'error';
+                throw e;
+            }
+        };
+
         return {
             loadingStatus,
             requestCreateAppointmentFormServiceData,
             availableProcedures,
             availableMasters,
+            availableTimes,
+            setAvailableTimes,
             setAvailableProcedures,
             setAvailableMasters,
         };
