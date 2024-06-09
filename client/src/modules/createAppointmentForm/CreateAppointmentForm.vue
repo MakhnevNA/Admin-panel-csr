@@ -1,6 +1,6 @@
 <template>
-    <form class="caform" @submit.prevent="handleSubmitForm">
-        <div class="caform__title">Create new appointment</div>
+    <form class="create-appointment-form" @submit.prevent="handleSubmitForm">
+        <div class="create-appointment-form__title">Create new appointment</div>
         <label htmlFor="service"> First name<span>*</span> </label>
         <Input
             v-model:value="firstName"
@@ -18,25 +18,6 @@
             id="secondName"
             placeholder="Second name"
         />
-        <label htmlFor="service"> Service <span>*</span> </label>
-        <Select
-            v-model:value="service"
-            className="select__service"
-            name="service"
-            id="service"
-            placeholder="Select a service"
-            :optionValue="reactiveServiceValue"
-        />
-
-        <label htmlFor="service"> Master name<span>*</span> </label>
-        <Select
-            v-model:value="masterName"
-            name="masterName"
-            class="input__masterName"
-            id="masterName"
-            placeholder="Master name"
-            :optionValue="reactiveMasterValue"
-        />
 
         <label htmlFor="phone"> Phone number<span>*</span> </label>
         <Input
@@ -48,108 +29,113 @@
             placeholder="+7 999 999 99 99"
         />
 
+        <label htmlFor="service"> Service <span>*</span> </label>
+        <Select
+            v-model:value="service"
+            className="select__service"
+            name="service"
+            id="service"
+            placeholder="Select a service"
+            :option-value="availableProcedures"
+            :loading="loadingStatus !== 'idle'"
+            @focus="handleGetProcedures"
+        />
+
+        <label htmlFor="service"> Master name<span>*</span> </label>
+        <Select
+            v-model:value="masterName"
+            className="input__masterName"
+            name="masterName"
+            id="masterName"
+            placeholder="Master name"
+            :option-value="availableMasters"
+            :loading="loadingStatus !== 'idle'"
+            @focus="handleGetMasters"
+        />
+
         <!-- <label htmlFor="date"> Date<span>*</span> </label>
-        <select
-            v-model="date"
+        <Select
+            v-model:value="date"
             name="date"
             class="input__date"
             id="date"
             placeholder="DD/MM/YYYY"
             pattern="^\d{2}\/\d{2}\/\d{4}"
             title="Format should be DD/MM/YYYY"
+            :disabled="!masterName"
         >
             <option v-for="item in serviceValue" :disabled="!item.available">
                 {{ item.label }}
             </option>
-        </select> -->
+        </Select>
 
-        <!-- <label htmlFor="date"> Time<span>*</span> </label>
-
-        <select
-            v-model="time"
+        <label htmlFor="date"> Time<span>*</span> </label>
+        <Select
+            v-model:value="time"
             name="time"
             class="input__time"
             id="time"
             placeholder="HH:mm"
             pattern="^\d{2}:\d{2}$"
             title="Format should be HH:mm"
+            :disabled="!date"
         >
             <option v-for="item in serviceValue" :disabled="!item.available">
                 {{ item.label }}
             </option>
-        </select> -->
+        </Select> -->
 
-        <Button class="caform__btn">Create</Button>
+        <Button type="submit" class="create-appointment-form__btn">
+            Create
+        </Button>
     </form>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect } from 'vue';
+import { ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import Input from '@/components/UI/Input.vue';
-import { useCAFormService } from './service/cAForm.service';
-import { serviceValue, masterValue } from './constants';
 import Select from '@/components/UI/Select.vue';
 import Button from '@/components/UI/Button.vue';
-
+import { useGetAvailableSelectData } from '@/core/Select/services/selectService.ts';
 const firstName = ref('');
 const secondName = ref('');
-const service = ref('');
-const masterName = ref<string | undefined>(undefined);
+const service = ref<string>();
+const masterName = ref<string>();
 const phone = ref('');
 const date = ref('');
 const time = ref('');
 
-const reactiveServiceValue = ref(serviceValue);
-const reactiveMasterValue = ref(masterValue);
+const { setAvailableProcedures, setAvailableMasters } =
+    useGetAvailableSelectData();
+const { loadingStatus, availableProcedures, availableMasters } = storeToRefs(
+    useGetAvailableSelectData(),
+);
 
-// Object.keys(masterValue).forEach((master) => {
-//     const service = masterValue[master].service;
-//     if (!serviceValue[service].available) {
-//         masterValue[master].available = false;
-//     }
-// });
+const handleGetProcedures = async () => {
+    const mastersProceduresId = availableMasters.value.find(
+        (item) => item.value === masterName.value,
+    )?.procedures;
 
-const updateAvailability = () => {
-    for (let master in masterValue) {
-        const masterService = masterValue[master].service;
-
-        // console.log(masterService);
-
-        // console.log(masterService);
-        // console.log(service.value);
-
-        if (masterService === service.value) {
-            reactiveMasterValue.value[master].available = true;
-        } else {
-            reactiveMasterValue.value[master].available = false;
-        }
-    }
+    // тут без проверок, потому что если случаи, когда может быть undefined,
+    // например, когда это поле выбирается первым и доступные мастера еще неизвестны
+    await setAvailableProcedures({
+        mastersProceduresId: mastersProceduresId,
+    });
 };
 
-watch(service, () => {
-    updateAvailability();
+const handleGetMasters = async () => {
+    const procedureId = availableProcedures.value.find(
+        (item) => item.value === service.value,
+    )?.procedureId;
 
-    console.log(reactiveMasterValue.value);
+    // тут без проверок, потому что если случаи, когда может быть undefined,
+    // например, когда это поле выбирается первым и доступные услуги еще неизвестны
+    await setAvailableMasters({ procedureId: procedureId });
+};
 
-    masterName.value = undefined;
-
-    // if (masterName.value === undefined) {
-    //     masterName.value = ''; // Если выбор сброшен, установите selectedValue в пустую строку
-    // }
-    // masterName.value = '';
-});
-
-// watchEffect(() => {
-//     if (masterName.value === undefined) {
-//         masterName.value = ''; // Если выбор сброшен, установите selectedValue в пустую строку
-//     }
-// });
-
-// watch(masterName, () => {
-//     service.value = '';
-// });
-
-const { requestCAFormData } = useCAFormService();
+// const { requestCreateAppointmentFormServiceData } =
+//     useCreateAppointmentFormService();
 
 // с форматом данных для даты решить
 // тогда вроде все хорошо должно работать
@@ -160,11 +146,12 @@ const handleSubmitForm = async () => {
         service: service.value,
         masterName: masterName.value,
         phone: phone.value,
-        date: date.value,
-        time: time.value,
+        // date: date.value,
+        // time: time.value,
         canceled: false,
     });
-    // await requestCAFormData({
+
+    // await requestCreateAppointmentFormServiceData({
     //     name: name.value,
     //     service: service.value,
     //     phone: phone.value,
@@ -177,7 +164,7 @@ const handleSubmitForm = async () => {
 <style scoped lang="scss">
 @import '@/style/variables.scss';
 
-.caform {
+.create-appointment-form {
     width: 280px;
     padding: 20px;
     background-color: #fff;
@@ -227,7 +214,7 @@ const handleSubmitForm = async () => {
         margin-top: 5px;
     }
 
-    .caform__btn {
+    .create-appointment-form__btn {
         width: 150px;
         height: 40px;
     }

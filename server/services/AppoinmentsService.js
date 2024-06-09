@@ -1,4 +1,4 @@
-import Appointments from './Appointments.js';
+import Appointments from '../Shema/Appointments.js';
 
 class AppoinmentsService {
     async createAppoinment(appointment) {
@@ -9,19 +9,25 @@ class AppoinmentsService {
     async getActiveAppointments() {
         const activeAppointments = await Appointments.find();
 
-        const filteredData = activeAppointments
+        const filteredActiveAppointments = activeAppointments
             .filter((active) => !active.canceled)
             .map((item) => {
-                const { canceled, ...rest } = item.toObject();
+                const { canceled, masterId, ...rest } = item.toObject();
                 return rest;
             });
 
-        return filteredData;
+        return filteredActiveAppointments;
     }
 
     async getAllAppointments() {
         const allAppointments = await Appointments.find();
-        return allAppointments;
+
+        const filteredAllAppointments = allAppointments.map((item) => {
+            const { masterId, ...rest } = item.toObject();
+            return rest;
+        });
+
+        return filteredAllAppointments;
     }
 
     async getOneAppointment(id) {

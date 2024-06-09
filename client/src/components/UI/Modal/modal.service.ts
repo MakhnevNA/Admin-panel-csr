@@ -7,6 +7,7 @@ export const useModalService = defineStore('modalService', () => {
 
     const openModal = (modalId: string) => {
         document.body.style.overflow = 'hidden';
+        document.documentElement.style.scrollbarGutter = 'stable';
 
         if (!modals.value.some((item) => item.id === modalId)) {
             modals.value.push({ id: modalId, isOpen: true });
@@ -15,6 +16,7 @@ export const useModalService = defineStore('modalService', () => {
 
     const closeModal = (modalId: string) => {
         document.body.style.overflow = 'auto';
+        document.documentElement.style.scrollbarGutter = 'unset';
         const index = modals.value.findIndex((modal) => modal.id === modalId);
 
         if (index !== -1) {

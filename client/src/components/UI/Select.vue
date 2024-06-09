@@ -3,14 +3,17 @@
         v-model:value="value"
         class="select"
         :class="props.className"
+        :loading="props.loading"
+        :disabled="props.disabled"
         :placeholder="props.placeholder"
         :name="props.name"
         :id="props.id"
-        @select="(e: any) => updateSelect(e)"
+        @select="handleSelect"
+        @focus="props.onFocus"
     >
-        <template v-for="option in props.optionValue" :key="option.label">
-            <Select-option v-if="option.available" :value="option.value">
-                {{ option.label }}
+        <template v-for="option in props.optionValue" :key="option._id">
+            <Select-option :value="option.value">
+                {{ option.name }}
             </Select-option>
         </template>
     </Select>
@@ -18,30 +21,36 @@
 
 <script setup lang="ts">
 import { Select, SelectOption } from 'ant-design-vue';
+import { RawValueType } from 'ant-design-vue/es/vc-select/BaseSelect';
+import { LabelInValueType } from 'ant-design-vue/es/vc-select/Select';
 import { ref } from 'vue';
 
-const value = ref<string | undefined>(undefined);
+const value = ref<string>();
 
 interface ISelectProps {
     value?: string;
-    className?: string;
-    optionValue?: any;
-    name?: string;
-    id?: string;
-    placeholder?: string;
+    className: string;
+    optionValue: any;
+    name: string;
+    id: string;
+    loading: boolean;
+    disabled?: boolean;
+    placeholder: string;
     required?: boolean;
+    onFocus: () => void;
 }
 
 const props = withDefaults(defineProps<ISelectProps>(), {
-    className: undefined,
-    name: undefined,
-    id: undefined,
     required: true,
 });
 
 const emit = defineEmits(['update:value']);
 
-const updateSelect = (e: Event) => {
+const handleSelect = (e: RawValueType | LabelInValueType) => {
+    // const selectedIndex = e.target.selectedIndex - 1; // Учитываем placeholder
+    // const selectedEmployee = props.optionValue[selectedIndex];
+    // emit('update:value', selectedEmployee);
+
     emit('update:value', e);
 };
 </script>

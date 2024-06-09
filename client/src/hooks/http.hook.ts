@@ -11,6 +11,8 @@ interface RequestConfig {
     headers?: HTTPHeaders;
 }
 
+const _baseUrl = 'api/';
+
 export const useHttp = () => {
     const request = async <ResponseType>({
         url,
@@ -19,7 +21,11 @@ export const useHttp = () => {
         headers = { 'Content-type': 'application/json' },
     }: RequestConfig): Promise<ResponseType> => {
         try {
-            const response = await fetch(url, { method, body, headers });
+            const response = await fetch(`${_baseUrl}${url}`, {
+                method,
+                body,
+                headers,
+            });
 
             if (!response.ok) {
                 throw Error(

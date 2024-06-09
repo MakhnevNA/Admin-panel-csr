@@ -1,5 +1,4 @@
-import Appointments from './Appointments.js';
-import AppoinmentsService from './AppoinmentsService.js';
+import AppoinmentsService from '../services/AppoinmentsService.js';
 
 class AppointmentsController {
     async createAppoinment(req, res) {

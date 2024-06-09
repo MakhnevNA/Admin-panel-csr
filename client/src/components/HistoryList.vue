@@ -29,10 +29,14 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .history-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 250px);
+    display: flex;
+    // grid-template-columns: repeat(auto-fit);
     justify-content: space-between;
-    width: calc(100% + 24px);
     gap: 20px;
+    flex-wrap: wrap;
+}
+
+.history-list__appointment {
+    margin: 0;
 }
 </style>

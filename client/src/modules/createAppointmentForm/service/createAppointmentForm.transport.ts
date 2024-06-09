@@ -1,12 +1,14 @@
 import { useHttp } from '@/hooks/http.hook';
-import { ICAForm } from '../types';
+import { ICreateAppointmentForm } from '../types';
 
 const { request } = useHttp();
 
-export const addNewAppointment = async (data: ICAForm): Promise<boolean> => {
+export const addNewAppointment = async (
+    data: ICreateAppointmentForm,
+): Promise<boolean> => {
     try {
         return request<boolean>({
-            url: 'api/',
+            url: '/',
             method: 'POST',
             body: JSON.stringify(data),
         });

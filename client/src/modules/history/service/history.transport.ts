@@ -8,7 +8,7 @@ export const getAllAppoinments = async (): Promise<
 > => {
     try {
         return request<IHistoryListAllAppointments[]>({
-            url: 'api/history/',
+            url: 'history',
         });
     } catch (error) {
         throw error;

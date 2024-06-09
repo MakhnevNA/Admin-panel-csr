@@ -31,9 +31,9 @@ const props = withDefaults(defineProps<IButtonProps>(), {
     isDisabled: false,
 });
 
-const emit = defineEmits(['click']);
+const emit = defineEmits(['handleClick']);
 const handleClick = () => {
-    emit('click');
+    emit('handleClick');
 };
 </script>
 

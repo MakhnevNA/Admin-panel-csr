@@ -1,19 +1,23 @@
 <template>
-    <!-- TODO: поменять верстку и стили когда будет готов бэк -->
     <li class="appointment">
         <div class="appointment__info">
-            <span class="appointment__date"
-                >Date: {{ formattedDate(props.appointment.date) }}</span
-            >
-            <span class="appointment__name"
-                >Name: {{ props.appointment.name }}</span
-            >
-            <span class="appointment__service"
-                >Service: {{ props.appointment.service }}</span
-            >
-            <span class="appointment__phone"
-                >Phone: {{ props.appointment.phone }}</span
-            >
+            <span class="appointment__date">
+                Date: {{ dateAfterFormatted }}
+            </span>
+
+            <span class="appointment__name"> Name: {{ clientName }} </span>
+
+            <span class="appointment__service">
+                Service: {{ props.appointment.service }}
+            </span>
+
+            <span class="appointment__service">
+                Master name: {{ transformedName(props.appointment.masterName) }}
+            </span>
+
+            <span class="appointment__phone">
+                Phone: {{ props.appointment.phone }}
+            </span>
         </div>
         <div
             v-if="location === ROUTER_LINK.MAIN_PAGE"
@@ -54,6 +58,7 @@ import dayjs from 'dayjs';
 import { useModalService } from './UI/Modal/modal.service';
 import { MODAL_ID } from '@/shared/modalId';
 import Button from './UI/Button.vue';
+import { transformedName } from '@/shared/utils/transformedName';
 
 const location = window.location.pathname;
 const timeLeft = ref<string | null>(null);
@@ -65,6 +70,10 @@ interface IAppointmentItemProps {
 }
 
 const props = defineProps<IAppointmentItemProps>();
+
+// TODO: поменяиь потом способ возращения данных клиента и сделать как у мастера и потом через transformedName отображать
+const clientName = `${props.appointment.secondName} ${props.appointment.firstName[0]}.`;
+const dateAfterFormatted = formattedDate(props.appointment.date);
 
 let timerId: NodeJS.Timeout;
 
@@ -105,7 +114,6 @@ onUnmounted(() => {
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
     display: flex;
     justify-content: space-between;
-    margin: 12px 0;
 
     &__timer {
         display: block;

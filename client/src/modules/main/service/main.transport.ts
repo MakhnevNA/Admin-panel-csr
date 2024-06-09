@@ -7,8 +7,8 @@ export const getActiveAppoinments = async (): Promise<
     ISheduleListActiveAppointments[]
 > => {
     try {
-        return request<ISheduleListActiveAppointments[]>({
-            url: 'api/',
+        return request({
+            url: '/',
         });
     } catch (error) {
         throw error;
