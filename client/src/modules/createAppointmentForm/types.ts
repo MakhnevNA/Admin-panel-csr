@@ -44,3 +44,9 @@ export interface ITimesResponce {
     procedure: string;
     workingTime: IWorkingTime[];
 }
+
+export interface IDateResponce {
+    _id: string;
+    value: string;
+    name: string;
+}

@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import router from './router.js';
 import cors from 'cors';
+import DatesController from './Controllers/DatesController.js';
 
 const PORT = 5000;
 const DB_URL =
@@ -27,6 +28,7 @@ async function start() {
         app.listen(PORT, () =>
             console.log(`server has stared on PORT ${PORT}`),
         );
+        await DatesController.loadDailyData();
     } catch (e) {
         console.error(e);
     }

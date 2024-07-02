@@ -1,6 +1,7 @@
 import { useHttp } from '@/hooks/http.hook';
 import {
     ICreateAppointmentForm,
+    IDateResponce,
     IMastersRequestBody,
     IMastersResponce,
     IProceduresRequestBody,
@@ -61,6 +62,16 @@ export const getAvailableTimes = (
             url: '/times',
             method: 'POST',
             body: JSON.stringify(data),
+        });
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getAvailableDates = (): Promise<IDateResponce[]> => {
+    try {
+        return request({
+            url: '/dates',
         });
     } catch (error) {
         throw error;

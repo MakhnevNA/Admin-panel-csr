@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import { TLodaidngStatus } from '@/shared/types';
 import {
     ICreateAppointmentForm,
+    IDateResponce,
     IMastersRequestBody,
     IMastersResponce,
     IProceduresRequestBody,
@@ -16,8 +17,10 @@ import {
     getAvailableMasters,
     getAvailableProcedures,
     getAvailableTimes,
+    getAvailableDates,
 } from './createAppointmentForm.transport';
 import { useSheduleService } from '@/modules/main/service/main.service';
+import dayjs from 'dayjs';
 
 export const useCreateAppointmentFormService = defineStore(
     'createAppointmentFormService',
@@ -26,6 +29,7 @@ export const useCreateAppointmentFormService = defineStore(
         const availableProcedures = ref<IProceduresResponce[]>([]);
         const availableMasters = ref<IMastersResponce[]>([]);
         const availableTimes = ref<ITimesResponce[]>([]);
+        const availableDates = ref<IDateResponce[]>([]);
 
         const { getSheduleListActiveAppointments } = useSheduleService();
 
@@ -78,15 +82,34 @@ export const useCreateAppointmentFormService = defineStore(
             }
         };
 
+        const setAvailableDates = async () => {
+            try {
+                loadingStatus.value = 'loading';
+                availableDates.value = (await getAvailableDates()).map(
+                    (item) => ({
+                        ...item,
+                        name: dayjs(item.name).format('DD/MM/YYYY'),
+                    }),
+                );
+
+                loadingStatus.value = 'idle';
+            } catch (e) {
+                loadingStatus.value = 'error';
+                throw e;
+            }
+        };
+
         return {
             loadingStatus,
             requestCreateAppointmentFormServiceData,
             availableProcedures,
             availableMasters,
             availableTimes,
+            availableDates,
             setAvailableTimes,
             setAvailableProcedures,
             setAvailableMasters,
+            setAvailableDates,
         };
     },
 );

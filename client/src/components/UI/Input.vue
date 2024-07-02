@@ -19,7 +19,7 @@ import { ref } from 'vue';
 const value = ref<string>();
 
 type TInputProps = {
-    type?: 'text' | 'password' | 'tel';
+    type?: 'text' | 'password' | 'tel' | 'number';
     className?: string;
     name?: string;
     id?: string;
@@ -58,5 +58,11 @@ input.ant-input {
     color: $black-text-50;
     border-radius: unset !important;
     box-shadow: unset;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 </style>

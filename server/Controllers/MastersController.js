@@ -10,7 +10,7 @@ class MastersController {
             );
             return res.json(availableMasters);
         } catch (e) {
-            res.json({ procedures: 'not found' });
+            res.json({ masters: 'not found' });
             res.status(500).json(e);
         }
     }

@@ -26,7 +26,7 @@
         <label htmlFor="phone"> Phone number<span>*</span> </label>
         <Input
             v-model:value="phone"
-            type="tel"
+            type="number"
             name="phone"
             class="input__phone"
             id="phone"
@@ -59,19 +59,17 @@
             @focus="handleGetMasters"
         />
 
-        <!-- <label htmlFor="date"> Date<span>*</span> </label>
+        <label htmlFor="date"> Date<span>*</span> </label>
         <Select
             v-model:value="date"
             name="date"
-            class="input__date"
+            className="input__date"
             id="date"
             placeholder="DD/MM/YYYY"
-            :disabled="!masterName"
-        >
-            <option v-for="item in serviceValue" :disabled="!item.available">
-                {{ item.label }}
-            </option>
-        </Select> -->
+            :loading="false"
+            :on-focus="handleGetDates"
+            :option-value="availableDates"
+        />
 
         <label htmlFor="date"> Time<span>*</span> </label>
         <Select
@@ -82,7 +80,7 @@
             placeholder="HH:mm"
             :option-value="availableTimes[0]?.workingTime"
             :loading="loadingStatus !== 'idle'"
-            :disabled="!service || !masterName"
+            :disabled="!service"
             :on-focus="handleGetTimes"
         />
 
@@ -111,7 +109,7 @@ const secondName = ref<string>();
 const service = ref<string>();
 const masterName = ref<string>();
 const phone = ref<string>();
-const date = ref<string>('2024-06-16');
+const date = ref<string>();
 const time = ref<string>();
 
 const isValidDataForm = ref(true);
@@ -121,10 +119,16 @@ const {
     setAvailableProcedures,
     setAvailableMasters,
     setAvailableTimes,
+    setAvailableDates,
 } = useCreateAppointmentFormService();
 
-const { loadingStatus, availableProcedures, availableMasters, availableTimes } =
-    storeToRefs(useCreateAppointmentFormService());
+const {
+    loadingStatus,
+    availableProcedures,
+    availableMasters,
+    availableTimes,
+    availableDates,
+} = storeToRefs(useCreateAppointmentFormService());
 
 const handleGetProcedures = async () => {
     const mastersProceduresId = availableMasters.value.find(
@@ -153,13 +157,17 @@ const handleGetTimes = async () => {
     }
 };
 
+const handleGetDates = async () => {
+    await setAvailableDates();
+};
+
 // с форматом данных для даты решить
 const handleSubmitForm = async () => {
     const masterId = availableMasters.value.find(
         (item) => item.name === masterName.value,
     )?._id;
 
-    if (
+    const validateForm =
         !!firstName.value &&
         !!secondName.value &&
         !!service.value &&
@@ -167,15 +175,16 @@ const handleSubmitForm = async () => {
         !!phone.value &&
         !!date.value &&
         !!time.value &&
-        masterId
-    ) {
+        masterId;
+
+    if (validateForm) {
         await requestCreateAppointmentFormServiceData({
             clientName: `${secondName.value} ${firstName.value}`,
-            service: service.value,
-            masterName: masterName.value,
+            service: service.value!,
+            masterName: masterName.value!,
             masterId: masterId,
-            phone: phone.value,
-            date: `${date.value}T${time.value.split(' ')[0]}`,
+            phone: phone.value!,
+            date: `${date.value}T${time.value!.split(' ')[0]}`,
             canceled: false,
         });
     } else {
@@ -189,6 +198,7 @@ const handleSubmitForm = async () => {
 
 .create-appointment-form {
     width: 280px;
+    max-height: 580px;
     padding: 20px;
     background-color: #fff;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);

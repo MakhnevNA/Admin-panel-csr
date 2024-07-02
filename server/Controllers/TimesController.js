@@ -10,7 +10,7 @@ class TimesController {
             );
             return res.json(availableTimes);
         } catch (e) {
-            res.json({ procedures: 'not found' });
+            res.json({ availableTimes: 'not found' });
             res.status(500).json(e);
         }
     }
