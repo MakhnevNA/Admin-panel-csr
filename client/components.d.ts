@@ -11,6 +11,7 @@ declare module 'vue' {
     Button: typeof import('./src/components/UI/Button.vue')['default']
     CancelModal: typeof import('./src/components/CancelModal.vue')['default']
     ErrorMessage: typeof import('./src/components/ErrorMessage.vue')['default']
+    Form: typeof import('./src/components/UI/Form.vue')['default']
     Header: typeof import('./src/components/header/Header.vue')['default']
     HistoryList: typeof import('./src/components/HistoryList.vue')['default']
     Input: typeof import('./src/components/UI/Input.vue')['default']

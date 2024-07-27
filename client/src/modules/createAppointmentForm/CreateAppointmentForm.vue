@@ -1,8 +1,14 @@
 <template>
-    <form
+    <Form
         class="create-appointment-form"
-        :class="{ 'create-appointment-form--dont-valid': !isValidDataForm }"
-        @submit.prevent="handleSubmitForm"
+        :initial-values="{
+            service: 'dffd',
+            masterName: 'fdffd',
+            date: 'fdfdf',
+            time: 'fdf',
+        }"
+        :validation-schema="newBookingFormShema"
+        :on-submit="handleSubmit"
     >
         <div class="create-appointment-form__title">Create new appointment</div>
         <label htmlFor="service"> First name<span>*</span> </label>
@@ -35,34 +41,35 @@
 
         <label htmlFor="service"> Service <span>*</span> </label>
         <Select
-            v-model:value="service"
             className="select__service"
+            v-model:value="service"
+            :key="serviceKey"
             name="service"
             id="service"
             placeholder="Select a service"
             :option-value="availableProcedures"
             :loading="loadingStatus !== 'idle'"
-            :disabled="!!time"
             @focus="handleGetProcedures"
         />
 
         <label htmlFor="service"> Master name<span>*</span> </label>
         <Select
-            v-model:value="masterName"
             className="input__masterName"
+            v-model:value="masterName"
+            :key="masterNameKey"
             name="masterName"
             id="masterName"
             placeholder="Master name"
             :option-value="availableMasters"
             :loading="loadingStatus !== 'idle'"
-            :disabled="!!time"
             @focus="handleGetMasters"
         />
 
         <label htmlFor="date"> Date<span>*</span> </label>
         <Select
-            v-model:value="date"
             name="date"
+            v-model:value="date"
+            :key="dateKey"
             className="input__date"
             id="date"
             placeholder="DD/MM/YYYY"
@@ -73,36 +80,33 @@
 
         <label htmlFor="date"> Time<span>*</span> </label>
         <Select
-            v-model:value="time"
             name="time"
+            v-model:value="time"
             className="input__time"
             id="time"
             placeholder="HH:mm"
+            :disabled="!masterName || !service"
             :option-value="availableTimes[0]?.workingTime"
             :loading="loadingStatus !== 'idle'"
-            :disabled="!service"
             :on-focus="handleGetTimes"
         />
 
         <Button type="submit" class="create-appointment-form__btn">
             Create
         </Button>
-        <div
-            v-if="!isValidDataForm"
-            class="create-appointment-form__error-text"
-        >
-            Заполните все поля
-        </div>
-    </form>
+    </Form>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import Input from '@/components/UI/Input.vue';
 import Select from '@/components/UI/Select.vue';
 import Button from '@/components/UI/Button.vue';
 import { useCreateAppointmentFormService } from './service/createAppointmentForm.service';
+import Form from '@/components/UI/Form.vue';
+import { newBookingFormShema } from '@/modules/createAppointmentForm/constants.ts';
+import { TValuesForm } from '@/shared/types';
 
 const firstName = ref<string>();
 const secondName = ref<string>();
@@ -112,7 +116,11 @@ const phone = ref<string>();
 const date = ref<string>();
 const time = ref<string>();
 
-const isValidDataForm = ref(true);
+const masterNameKey = ref<any>();
+const serviceKey = ref<any>();
+const dateKey = ref<string>();
+
+const formRef = ref<InstanceType<typeof Form>>();
 
 const {
     requestCreateAppointmentFormServiceData,
@@ -162,35 +170,60 @@ const handleGetDates = async () => {
 };
 
 // с форматом данных для даты решить
-const handleSubmitForm = async () => {
-    const masterId = availableMasters.value.find(
-        (item) => item.name === masterName.value,
-    )?._id;
+const handleSubmit = (values: TValuesForm) => {
+    // const masterId = availableMasters.value.find(
+    //     (item) => item.name === masterName.value,
+    // )?._id;
 
-    const validateForm =
-        !!firstName.value &&
-        !!secondName.value &&
-        !!service.value &&
-        !!masterName.value &&
-        !!phone.value &&
-        !!date.value &&
-        !!time.value &&
-        masterId;
+    console.log({
+        // clientName: `${secondName.value} ${firstName.value}`,
+        // service: service.value!,
+        // masterName: masterName.value!,
+        // // masterId: masterId,
+        // phone: phone.value!,
+        // date: `${date.value}T${time.value?.split(' ')[0]}`,
+        // canceled: false,
+        values,
+    });
 
-    if (validateForm) {
-        await requestCreateAppointmentFormServiceData({
-            clientName: `${secondName.value} ${firstName.value}`,
-            service: service.value!,
-            masterName: masterName.value!,
-            masterId: masterId,
-            phone: phone.value!,
-            date: `${date.value}T${time.value!.split(' ')[0]}`,
-            canceled: false,
-        });
-    } else {
-        isValidDataForm.value = false;
-    }
+    // const validateForm =
+    //     !!firstName.value &&
+    //     !!secondName.value &&
+    //     !!service.value &&
+    //     !!masterName.value &&
+    //     !!phone.value &&
+    //     !!date.value &&
+    //     !!time.value &&
+    //     masterId;
+
+    // if (validateForm) {
+    //     const res = await requestCreateAppointmentFormServiceData({
+    //         clientName: `${secondName.value} ${firstName.value}`,
+    //         service: service.value!,
+    //         masterName: masterName.value!,
+    //         masterId: masterId,
+    //         phone: phone.value!,
+    //         date: `${date.value}T${time.value!.split(' ')[0]}`,
+    //         canceled: false,
+    //     });
+    // }
+
+    // if (res) {
+    // 	handleResetForm()
+    // }
 };
+
+watch(time, (newVal, oldaVal) => {
+    if (oldaVal !== undefined) {
+        masterNameKey.value = newVal;
+        masterName.value = undefined;
+        serviceKey.value = newVal;
+        service.value = undefined;
+        firstName.value = undefined;
+        dateKey.value = newVal;
+        date.value = undefined;
+    }
+});
 </script>
 
 <style scoped lang="scss">
@@ -202,16 +235,6 @@ const handleSubmitForm = async () => {
     padding: 20px;
     background-color: #fff;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
-
-    &--dont-valid {
-        border: 1px solid red;
-    }
-
-    &__error-text {
-        margin-top: 10px;
-        color: red;
-        text-align: center;
-    }
 
     &__title {
         font-weight: 600;
@@ -232,11 +255,11 @@ const handleSubmitForm = async () => {
         }
     }
     button {
-        width: 150px;
-        height: 40px;
-        display: block;
+        // width: 150px;
+        // height: 40px;
+        // display: block;
         margin: 20px auto 0 auto;
-        border: 1px solid rgba(0, 0, 0, 0.4);
+        // border: 1px solid rgba(0, 0, 0, 0.4);
         border-radius: 24px;
         cursor: pointer;
         background-color: #fff;

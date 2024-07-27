@@ -1,29 +1,36 @@
 <template>
-    <Select
-        v-model:value="value"
-        class="select"
-        :class="props.className"
-        :loading="props.loading"
-        :disabled="props.disabled"
-        :placeholder="props.placeholder"
-        :name="props.name"
-        :id="props.id"
-        @select="handleSelect"
-        @focus="props.onFocus"
-    >
-        <SelectOption selected :value="undefined" class="select_without-value">
-            {{ props.placeholder }}
-        </SelectOption>
-        <template v-for="option in props.optionValue" :key="option._id">
-            <SelectOption :value="option.value">
-                {{ option.name }}
+    <Tooltip :title="props.tooltipTitle">
+        <Select
+            v-model:value="value"
+            class="select"
+            :class="props.className"
+            ref="selectRef"
+            :loading="props.loading"
+            :disabled="props.disabled"
+            :placeholder="props.placeholder"
+            :name="props.name"
+            :id="props.id"
+            @select="handleSelect"
+            @focus="props.onFocus"
+        >
+            <SelectOption
+                selected
+                :value="undefined"
+                class="select_without-value"
+            >
+                {{ props.placeholder }}
             </SelectOption>
-        </template>
-    </Select>
+            <template v-for="option in props.optionValue" :key="option._id">
+                <SelectOption :value="option.value">
+                    {{ option.name }}
+                </SelectOption>
+            </template>
+        </Select>
+    </Tooltip>
 </template>
 
 <script setup lang="ts">
-import { Select, SelectOption } from 'ant-design-vue';
+import { Select, SelectOption, Tooltip } from 'ant-design-vue';
 import { RawValueType } from 'ant-design-vue/es/vc-select/BaseSelect';
 import { LabelInValueType } from 'ant-design-vue/es/vc-select/Select';
 import { ref } from 'vue';
@@ -40,12 +47,18 @@ interface ISelectProps {
     disabled?: boolean;
     placeholder: string;
     required?: boolean;
+    tooltipTitle?: string;
     onFocus: () => void;
 }
 
 const props = withDefaults(defineProps<ISelectProps>(), {
+    tooltipTitle: undefined,
     required: true,
 });
+
+const selectRef = ref<HTMLSelectElement>();
+
+defineExpose({ select: selectRef });
 
 const emit = defineEmits(['update:value']);
 

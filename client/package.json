@@ -10,13 +10,16 @@
     },
     "dependencies": {
         "@types/node": "^20.12.5",
+        "@vorms/core": "^1.1.0",
+        "@vorms/resolvers": "^1.1.0",
         "ant-design-vue": "^4.2.1",
         "dayjs": "^1.11.10",
         "pinia": "^2.1.7",
         "sass": "^1.72.0",
         "vite-svg-loader": "^5.1.0",
         "vue": "^3.4.21",
-        "vue-router": "^4.3.0"
+        "vue-router": "^4.3.0",
+        "yup": "^1.4.0"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^5.0.4",
