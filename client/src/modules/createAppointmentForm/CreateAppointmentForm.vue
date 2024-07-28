@@ -1,51 +1,46 @@
 <template>
     <Form
         class="create-appointment-form"
-        :initial-values="{
-            service: 'dffd',
-            masterName: 'fdffd',
-            date: 'fdfdf',
-            time: 'fdf',
-        }"
+        :initial-values="{}"
         :validation-schema="newBookingFormShema"
         :on-submit="handleSubmit"
     >
         <div class="create-appointment-form__title">Create new appointment</div>
         <label htmlFor="service"> First name<span>*</span> </label>
         <Input
+            id="firstName"
             v-model:value="firstName"
             name="firstName"
             class="input__firstName"
-            id="firstName"
             placeholder="First name"
         />
 
         <label htmlFor="service"> Second name<span>*</span> </label>
         <Input
+            id="secondName"
             v-model:value="secondName"
             name="secondName"
             class="input__secondName"
-            id="secondName"
             placeholder="Second name"
         />
 
         <label htmlFor="phone"> Phone number<span>*</span> </label>
         <Input
+            id="phone"
             v-model:value="phone"
             type="number"
             name="phone"
             class="input__phone"
-            id="phone"
             placeholder="+7 999 999 99 99"
         />
 
         <label htmlFor="service"> Service <span>*</span> </label>
         <Select
-            className="select__service"
-            v-model:value="service"
-            :key="serviceKey"
-            name="service"
             id="service"
+            :key="serviceKey"
+            v-model:value="service"
+            className="select__service"
+            name="service"
             placeholder="Select a service"
             :option-value="availableProcedures"
             :loading="loadingStatus !== 'idle'"
@@ -54,11 +49,11 @@
 
         <label htmlFor="service"> Master name<span>*</span> </label>
         <Select
-            className="input__masterName"
-            v-model:value="masterName"
-            :key="masterNameKey"
-            name="masterName"
             id="masterName"
+            :key="masterNameKey"
+            v-model:value="masterName"
+            className="input__masterName"
+            name="masterName"
             placeholder="Master name"
             :option-value="availableMasters"
             :loading="loadingStatus !== 'idle'"
@@ -67,11 +62,11 @@
 
         <label htmlFor="date"> Date<span>*</span> </label>
         <Select
-            name="date"
-            v-model:value="date"
-            :key="dateKey"
-            className="input__date"
             id="date"
+            :key="dateKey"
+            v-model:value="date"
+            name="date"
+            className="input__date"
             placeholder="DD/MM/YYYY"
             :loading="false"
             :on-focus="handleGetDates"
@@ -80,10 +75,10 @@
 
         <label htmlFor="date"> Time<span>*</span> </label>
         <Select
-            name="time"
-            v-model:value="time"
-            className="input__time"
             id="time"
+            v-model:value="time"
+            name="time"
+            className="input__time"
             placeholder="HH:mm"
             :disabled="!masterName || !service"
             :option-value="availableTimes[0]?.workingTime"
@@ -116,8 +111,8 @@ const phone = ref<string>();
 const date = ref<string>();
 const time = ref<string>();
 
-const masterNameKey = ref<any>();
-const serviceKey = ref<any>();
+const masterNameKey = ref<string>();
+const serviceKey = ref<string>();
 const dateKey = ref<string>();
 
 const formRef = ref<InstanceType<typeof Form>>();

@@ -10,9 +10,9 @@
     </div>
     <CancelModal
         :modal-id="MODAL_ID.CANCEL__MODAL"
+        :on-click="() => 0"
         @closeModal="closeModal"
         @closeModalOnEscapeKey="closeModalOnEscapeKey"
-        :on-click="() => 0"
     />
 </template>
 

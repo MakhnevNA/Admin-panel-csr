@@ -1,15 +1,15 @@
 <template>
     <Tooltip :title="props.tooltipTitle">
         <Select
+            :id="props.id"
+            ref="selectRef"
             v-model:value="value"
             class="select"
             :class="props.className"
-            ref="selectRef"
             :loading="props.loading"
             :disabled="props.disabled"
             :placeholder="props.placeholder"
             :name="props.name"
-            :id="props.id"
             @select="handleSelect"
             @focus="props.onFocus"
         >
@@ -38,8 +38,8 @@ import { ref } from 'vue';
 const value = ref<string>();
 
 interface ISelectProps {
-    value?: string;
     className: string;
+    // eslint-disable-next-line
     optionValue: any;
     name: string;
     id: string;

@@ -1,12 +1,12 @@
 <template>
     <div>
         <Input
+            :id="props.id"
             v-model:value="value"
             class="input"
             :type="props.type"
             :class="[$attrs.class, { 'input--error': error }]"
             :name="props.name"
-            :id="props.id"
             :placeholder="props.placeholder"
             :autocomplete="props.autocomplete"
             @change="handleChange"
@@ -28,8 +28,6 @@
 import { useField, useFormContext } from '@vorms/core';
 import { Input } from 'ant-design-vue';
 import { toRef } from 'vue';
-
-// const value1 = ref<string>();
 
 type TInputProps = {
     type?: 'text' | 'password' | 'tel' | 'number';

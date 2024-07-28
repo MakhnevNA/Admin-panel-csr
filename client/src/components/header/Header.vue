@@ -7,7 +7,11 @@
         </RouterLink>
         <nav>
             <ul class="header__list">
-                <li class="header__item" v-for="link in headerNavigation">
+                <li
+                    v-for="link in headerNavigation"
+                    :key="link.title"
+                    class="header__item"
+                >
                     <RouterLink
                         :to="link.url"
                         class="header__link"
